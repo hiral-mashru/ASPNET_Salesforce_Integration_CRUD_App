@@ -1,0 +1,30 @@
+﻿
+
+@{
+    ViewData["Title"] = "Home Page";
+    //asp-all-route-data
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <div><b>Quotes</b><br /></div>
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            <th>Quote Id </th>
+            <th>Quote Name </th>
+        </tr>
+        @if (ViewBag.quotes1 != null)
+        {
+            @foreach (var d in (ViewBag.quotes1))
+            {
+                <tr>
+                    <td>@d.Id</td>
+                    <td><a asp-action="singleQuote" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
+                </tr>
+            }
+        }
+    </table>
+    <form asp-action="logout" asp-controller="Login" method="post">
+        <input type="submit" id="submit" name="submit" value="Logout" />
+    </form>
+</div>
