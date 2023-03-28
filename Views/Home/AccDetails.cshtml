@@ -1,0 +1,51 @@
+﻿@{
+
+    ViewData["Title"] = "Create Account";
+
+}
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CRUD App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="showUpdateAccount" asp-route-Id=@ViewBag.accDetail.Id>Update Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="deleteAccount" asp-route-Id=@ViewBag.accDetail.Id>Delete Account</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<h1>@ViewData["Title"]</h1>
+
+<div class="text-center">
+    <div><b>Account Detail</b><br /></div>
+
+    @if (ViewBag.accDetail != null)
+    {
+        <div class="text-center">
+            <p>Id : @ViewBag.accDetail.Id</p>
+            <p>Name : @ViewBag.accDetail.Name</p>
+            <p>Region: @ViewBag.accDetail.Region__c</p>
+            <p>Type: @ViewBag.accDetail.Type</p>
+            <p>Customer Rating: @ViewBag.accDetail.Customer_Rating__c</p>
+        </div>
+    }
+    <form asp-action="logout" asp-controller="Login" method="post">
+        <input type="submit" id="submit" name="submit" value="Logout" />
+    </form>
+</div>

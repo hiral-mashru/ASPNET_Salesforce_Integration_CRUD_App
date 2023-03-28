@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Net;
 using Newtonsoft.Json;
 using System.Configuration;
-using System.Web;
+using System.Web.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json.Nodes;
 
@@ -107,6 +107,83 @@ namespace Account_CRUD_App.Models
                 Console.WriteLine("RESPONSE::"+response);
                 return response.Content.ReadAsStringAsync().Result;
             }
+        }
+
+        public Boolean takeQuery(string input, string instURL, string aToken)
+        {
+            var methd = (HttpMethod?)null;
+            using (var client = new HttpClient())
+            {
+                string idStr = "";
+                var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(input);
+                Console.WriteLine($"\n\nTake query: {data}");
+                string cont = "{";
+                int i = 0;
+                foreach (KeyValuePair<string, string> entry in data)
+                {
+                    Console.WriteLine("\nITEM::" + entry);
+                    if (i != 0)
+                    {
+                        cont = cont + ",";
+                    }
+                    if(entry.Key == "Id")
+                    {
+                        idStr = "/"+entry.Value;
+                        continue;
+                    }
+                    cont += "\r\n    \"" + entry.Key + "\": \"" + entry.Value + "\"";
+                    Console.WriteLine("\ncont++ "+cont);
+                    i++;
+                }
+                cont = cont + "\r\n}";
+                Console.WriteLine("\nSTRING::" + cont +"::"+idStr);
+                
+                if (idStr != "")
+                {
+                    methd = HttpMethod.Patch;
+                } else
+                {
+                    methd = HttpMethod.Post;
+                }
+                Console.WriteLine("\nMethod::" + methd);
+                var request = new HttpRequestMessage(methd, instURL + "/services/data/v57.0/sobjects/Account"+idStr);
+                request.Headers.Add("Authorization", "Bearer "+aToken);
+                //request.Headers.Add("Content-Type", "application/json");
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
+
+                var content = new StringContent(cont, null, "application/json");
+                request.Content = content;
+
+                var response = client.SendAsync(request).Result;
+                Console.WriteLine("\n\nRESPONSE::"+response.Content.ReadAsStringAsync().Result);
+                response.EnsureSuccessStatusCode();
+                string s = response.Content.ReadAsStringAsync().Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+            //return "Done";
+        }
+
+        public Boolean deleteQuery(string id, string instURL, string aToken)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Delete, instURL+"/services/data/v57.0/sobjects/Account/"+id);
+            request.Headers.Add("Authorization", "Bearer "+aToken);
+            request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
+            var content = new StringContent("", null, "text/plain");
+            request.Content = content;
+            var response = client.SendAsync(request).Result;
+            response.EnsureSuccessStatusCode();
+            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+
+            return true;
         }
     }
 }

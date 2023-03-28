@@ -1,0 +1,45 @@
+﻿@{
+    
+    ViewData["Title"] = "Quote Detail";
+    
+}
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CRUD App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<h1>@ViewData["Title"]</h1>
+<div class="text-center">
+<div><b>Quote Detailss</b><br /></div>
+
+    @if (ViewBag.quoteDetail != null)
+    {
+        <div class="text-center">
+            <p>Id : @ViewBag.quoteDetail.Id</p>
+            <p>Name : @ViewBag.quoteDetail.Name</p>
+            <p>Approval Stage : @ViewBag.quoteDetail.Apttus_Proposal__Approval_Stage__c</p>
+            <p>Net Amount : @ViewBag.quoteDetail.Apttus_Proposal__Net_Amount__c</p>
+            <p>Presented Date : @ViewBag.quoteDetail.Apttus_Proposal__Presented_Date__c</p>
+        </div>
+    }
+<form asp-action="logout" asp-controller="Login" method="post">
+    <input type="submit" id="submit" name="submit" value="Logout" />
+</form>
+</div>
