@@ -14,16 +14,12 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-
-                    
-                    
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
                         </li>
-                    
                 </ul>
             </div>
         </div>
@@ -48,6 +44,22 @@
             }
         }
     </table>
+    <form>
+        <div id="ShowButton">
+            @for (int i = 1; i <= ViewBag.UsersCount; i++)
+            {
+                <input type="button" id="@i" value="@i" onclick="SortData(@i)" />
+            }
+        </div>
+        <select class="pagesize" onchange="Display()" id="drpdwn">
+            <option selected="selected" value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+        </select>
+        <input type="text" id="Search" />
+    </form>
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
     </form>

@@ -1,4 +1,5 @@
 ﻿using Account_CRUD_App.Models;
+using Account_CRUP_App.Controllers;
 using Account_CRUP_App.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,12 +53,14 @@ namespace Account_CRUD_App.Controllers
             }
             else
             {
-                Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                config.AppSettings.Settings["access_token"].Value = response["access_token"];
-                config.AppSettings.Settings["instance_url"].Value = response["instance_url"];
-                config.Save(ConfigurationSaveMode.Modified);
-                System.Configuration.ConfigurationManager.RefreshSection("appSettings");
-                Console.WriteLine("\nCONFIG::" + config.AppSettings.Settings["access_token"].Value+"::"+ config.AppSettings.Settings["instance_url"].Value);
+                HomeController.access_token = response["access_token"];
+                HomeController.instance_url = response["instance_url"];
+                //Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                //config.AppSettings.Settings["access_token"].Value = response["access_token"];
+                //config.AppSettings.Settings["instance_url"].Value = response["instance_url"];
+                //config.Save(ConfigurationSaveMode.Modified);
+                //System.Configuration.ConfigurationManager.RefreshSection("appSettings");
+                //Console.WriteLine("\nCONFIG::" + config.AppSettings.Settings["access_token"].Value+"::"+ config.AppSettings.Settings["instance_url"].Value);
                 
                 /*TempData["AuthToken"] = response["access_token"];
                 TempData["InstanceURL"] = response["instance_url"];
@@ -109,7 +112,9 @@ namespace Account_CRUD_App.Controllers
         {
             try
             {
-                Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                HomeController.access_token = "";
+                HomeController.instance_url = "";
+                /*Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.Settings["username"].Value = "";
                 config.AppSettings.Settings["password"].Value = "";
                 config.Save(ConfigurationSaveMode.Modified);
@@ -124,7 +129,8 @@ namespace Account_CRUD_App.Controllers
                 else
                 {
                     return RedirectToAction("Login", "Home");
-                }
+                }*/
+                return RedirectToAction("Login", "Home");
             } catch(Exception ex)
             {
                 return Content(ex.Message);

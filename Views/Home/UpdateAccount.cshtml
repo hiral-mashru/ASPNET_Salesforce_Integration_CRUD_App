@@ -32,26 +32,26 @@
     
     <div class="text-center">
         <form method="post" id="myForm">
-            <input type="text" id="id" name="id" value=@ViewBag.accDetail.Id hidden />
+            <input type="text" id="id" name="id" value="@ViewBag.accDetail.Id" hidden />
             <label for="name"> Name:</label>
-            <input type="text" id="name" name="name" value=@ViewBag.accDetail.Name /><br />
+            <input type="text" id="name" name="name" value="@ViewBag.accDetail.Name" /><br />
 
             <label for="region">Region:</label>
-            <select name="region" id="region" selected=@ViewBag.accDetail.Region__c>
+            <select name="region" id="region">
                 <option value="Americas">Americas</option>
                 <option value="EMEA">EMEA</option>
                 <option value="APAC">APAC</option>
             </select><br />
 
             <label for="rating">Customer Rating:</label>
-            <select name="rating" id="rating" selected=@ViewBag.accDetail.Customer_Rating__c>
+            <select name="rating" id="rating" >
                 <option value="Gold">Gold</option>
                 <option value="Silver">Silver</option>
                 <option value="Bronze">Bronze</option>
             </select><br />
 
             <label for="type">Type:</label>
-            <select name="type" id="type" onselect=@ViewBag.accDetail.Type>
+            <select name="type" id="type">
                 <option value="Analyst">Analyst</option>
                 <option value="Competitor">Competitor</option>
                 <option value="Customer">Customer</option>

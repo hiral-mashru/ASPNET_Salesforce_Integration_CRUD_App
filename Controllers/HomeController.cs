@@ -7,6 +7,7 @@ using System.Configuration;
 using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
 using System.Web.Helpers;
+using Account_CRUD_App.Controllers;
 
 namespace Account_CRUP_App.Controllers
 {
@@ -131,8 +132,9 @@ namespace Account_CRUP_App.Controllers
         }
         public IActionResult Index()
         {
-            Console.WriteLine("\nIN HOME Controller\n");
-            Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::"+access_token);
+            
+            /*Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             
             if (config.AppSettings.Settings["access_token"].Value != "")
             {
@@ -140,9 +142,9 @@ namespace Account_CRUP_App.Controllers
             }
             instance_url = config.AppSettings.Settings["instance_url"].Value;
             access_token = config.AppSettings.Settings["access_token"].Value;
-
+            */
             SFLogin log = new SFLogin();
-            string getData = log.getQuery("select id, name from Apttus_Proposal__Proposal__c", instance_url, access_token);
+            string getData = log.getQuery("select id, name from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC", instance_url, access_token);
             Console.WriteLine("\nHomeGETData::" + getData);
             if (!String.IsNullOrEmpty(getData))
             {
