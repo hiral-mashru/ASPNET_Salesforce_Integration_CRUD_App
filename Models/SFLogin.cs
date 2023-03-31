@@ -181,14 +181,15 @@ namespace Account_CRUD_App.Models
         public Boolean deleteQuery(string id)
         {
             var client = new HttpClient();
+            Console.WriteLine("\nIDD:" + id);
             var request = new HttpRequestMessage(HttpMethod.Delete, InstanceUrl + "/services/data/v57.0/sobjects/Account/"+id);
             request.Headers.Add("Authorization", "Bearer "+AuthToken);
             request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
             var content = new StringContent("", null, "text/plain");
             request.Content = content;
             var response = client.SendAsync(request).Result;
-            response.EnsureSuccessStatusCode();
-            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            //response.EnsureSuccessStatusCode();
+            Console.WriteLine("\nDelete::"+response.Content.ReadAsStringAsync().Result);
 
             return true;
         }

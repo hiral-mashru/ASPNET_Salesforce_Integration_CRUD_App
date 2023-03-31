@@ -29,25 +29,40 @@
 </header>
 
 <div class="text-center">
-    <p>hii @TempData["status"]</p>
+    <p>@TempData["status"]</p>
     <h1 class="display-4">Welcome</h1>
     <div><b>Accounts</b><br /></div>
+    @if (TempData.ContainsKey("errMsg"))
+    {
+        <p>@TempData["errMsg"]</p>
+    }
+    else
+    {
     <table class="table table-bordered table-responsive table-hover">
         <tr>
-            <th>Account Id </th>
             <th>Account Name </th>
+            <th>Region </th>
+            <th>Type </th>
+            <th>Customer Rating </th>
+            <th>Update Record</th>
+            <th>Delete Record</th>
         </tr>
         @if (ViewBag.accData != null)
         {
             @foreach (var d in (ViewBag.accData))
             {
                 <tr>
-                    <td>@d.Id</td>
                     <td><a asp-action="singleAcc" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
+                    <td>@d.Region__c</td>
+                    <td>@d.Type</td>
+                    <td>@d.Customer_Rating__c</td>
+                    <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="showUpdateAccount" asp-route-Id=@d.Id>Update</a></td>
+                    <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="deleteAccount" asp-route-Id=@d.Id>Delete</a></td>
                 </tr>
             }
         }
     </table>
+    }
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
     </form>

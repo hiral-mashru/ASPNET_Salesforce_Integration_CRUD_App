@@ -38,7 +38,7 @@ namespace Account_CRUP_App.Controllers
                 }
             } else
             {
-                fieldStr = "Name";
+                fieldStr = "Id, Name";
             }
             Console.WriteLine("\nFieldStr::"+fieldStr);
             SFLogin log = new SFLogin();
@@ -50,7 +50,8 @@ namespace Account_CRUP_App.Controllers
                 return accRecords.records.ToList<object>();
             } else
             {
-                return new List<object> {getData};
+                //object err = { "Name": getData } ;
+                return new List<object>() { getData };
             }
             throw new NotImplementedException();
         }

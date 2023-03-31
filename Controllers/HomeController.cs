@@ -23,41 +23,23 @@ namespace Account_CRUP_App.Controllers
 
         public IActionResult getAccount()
         {
-            Console.WriteLine("\nIN HOME Controller\n");
-            AccountCRUD accCRUD = new AccountCRUD();
-            List<string> fields = new List<string>() { "Name", "Region__c", "Type", "Customer_Rating__c" };
-            List<object> response = new List<object>();
-            response = accCRUD.Read(1,10,fields);
-            Console.WriteLine("\nress::" + response.ToString + "--");
-            foreach (object res in response)
-            {
-                Console.WriteLine("\nress::" + res.ToString);
-            }
-
-
-            if (access_token!="")
-            {
-                SFLogin log = new SFLogin();
-                string getData = log.getQuery("select id, name from Account order by LastModifiedDate DESC");
-                Console.WriteLine("\nHomeGETData::" + getData);
-                if (!String.IsNullOrEmpty(getData))
+            if (access_token != "") { 
+                Console.WriteLine("\nIN HOME Controller\n");
+                AccountCRUD accCRUD = new AccountCRUD();
+                List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c" };
+                List<object> response = new List<object>();
+                response = accCRUD.Read(1, 10, fields);
+                Console.WriteLine("\nress::" + response.ToString + "--");
+                foreach (object res in response)
                 {
-                    var accRecords = JsonConvert.DeserializeObject<AccountModel>(getData.ToString());
-
-                    Console.WriteLine("\nMODEL:: " + accRecords);
-                    if (accRecords.records.Count > 0)
-                    {
-                        ViewBag.aceess_token = access_token;
-                        ViewBag.accData = accRecords.records;
-                    }
-                    if (TempData.ContainsKey("status"))
-                    {
-                        TempData.Keep("status");
-                    }
-                    
+                    Console.WriteLine("\nress::" + res.ToString);
                 }
-                return View("Accounts");
+                ViewBag.accData = response;
+            } else
+            {
+                TempData["errMsg"] = "Something went wrong...";
             }
+            
             return View("Accounts");
         }
 
