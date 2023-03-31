@@ -26,7 +26,7 @@ namespace Account_CRUD_App.Controllers
             configuration.Save(ConfigurationSaveMode.Full, true);
             System.Configuration.ConfigurationManager.RefreshSection("appSettings");
         }*/
-        private static Models.SFLogin createClientConnection()
+        /*private static Models.SFLogin createClientConnection()
         {
             var appSettings = System.Configuration.ConfigurationManager.AppSettings;
             return new Models.SFLogin
@@ -38,7 +38,7 @@ namespace Account_CRUD_App.Controllers
                 ClientSecret = appSettings["clientSecret"]
             };
         }
-
+        */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult login1(String username, String password)

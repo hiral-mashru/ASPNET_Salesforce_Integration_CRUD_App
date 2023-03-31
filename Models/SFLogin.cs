@@ -23,8 +23,8 @@ namespace Account_CRUD_App.Models
         public string Token { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
-        public string AuthToken { get; set; }
-        public string InstanceUrl { get; set; }
+        public static string AuthToken;
+        public static string InstanceUrl;
 
         static readonly HttpClient Client;
        
@@ -94,22 +94,29 @@ namespace Account_CRUD_App.Models
             }
         }
 
-        public string getQuery(string soqlQuery, string instURL, string aToken)
+        public string getQuery(string soqlQuery)
         {
             using(var client = new HttpClient())
             {
-                string restRequest = instURL + "/services/data/v36.0/" + "query?q=" + soqlQuery;
+                string restRequest = InstanceUrl + "/services/data/v36.0/" + "query?q=" + soqlQuery;
                 var request = new HttpRequestMessage(HttpMethod.Get, restRequest);
-                request.Headers.Add("Authorization", "Bearer " + aToken);
+                request.Headers.Add("Authorization", "Bearer " + AuthToken);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 request.Headers.Add("X-PreetyPrint", "1");
                 var response = client.SendAsync(request).Result;
                 Console.WriteLine("RESPONSE::"+response);
-                return response.Content.ReadAsStringAsync().Result;
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return response.Content.ReadAsStringAsync().Result;
+                } else
+                {
+                    return "ERROR:: StatusCode: " + response.StatusCode + " - " + response.Content.ReadAsStringAsync().Result;
+                }
+                
             }
         }
 
-        public Boolean takeQuery(string input, string instURL, string aToken)
+        public Boolean takeQuery(string input)
         {
             var methd = (HttpMethod?)null;
             using (var client = new HttpClient())
@@ -146,8 +153,8 @@ namespace Account_CRUD_App.Models
                     methd = HttpMethod.Post;
                 }
                 Console.WriteLine("\nMethod::" + methd);
-                var request = new HttpRequestMessage(methd, instURL + "/services/data/v57.0/sobjects/Account"+idStr);
-                request.Headers.Add("Authorization", "Bearer "+aToken);
+                var request = new HttpRequestMessage(methd, InstanceUrl + "/services/data/v57.0/sobjects/Account"+idStr);
+                request.Headers.Add("Authorization", "Bearer "+AuthToken);
                 //request.Headers.Add("Content-Type", "application/json");
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
@@ -171,11 +178,11 @@ namespace Account_CRUD_App.Models
             //return "Done";
         }
 
-        public Boolean deleteQuery(string id, string instURL, string aToken)
+        public Boolean deleteQuery(string id)
         {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Delete, instURL+"/services/data/v57.0/sobjects/Account/"+id);
-            request.Headers.Add("Authorization", "Bearer "+aToken);
+            var request = new HttpRequestMessage(HttpMethod.Delete, InstanceUrl + "/services/data/v57.0/sobjects/Account/"+id);
+            request.Headers.Add("Authorization", "Bearer "+AuthToken);
             request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
             var content = new StringContent("", null, "text/plain");
             request.Content = content;

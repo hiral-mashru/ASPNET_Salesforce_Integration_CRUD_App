@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    var UsersData = ViewBag.quotes1;
     //asp-all-route-data
 }
 <header>
@@ -44,9 +45,20 @@
             }
         }
     </table>
+    <input type="button" value="Previous" onclick="PreviosPage()"/>
+    @TempData["PageNumber"]
+    <input type="button" value="Next" onclick="NextPage()" />
+
+    <script>
+        function PreviosPage(){
+            var pageNum = '@TempData["PageNumber"]';
+            console.log("PageNumber::"+pageNum);
+        }
+    </script>
+
     <form>
         <div id="ShowButton">
-            @for (int i = 1; i <= ViewBag.UsersCount; i++)
+            @for (int i = 1; i <= ViewBag.QuotesCount; i++)
             {
                 <input type="button" id="@i" value="@i" onclick="SortData(@i)" />
             }

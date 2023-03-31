@@ -24,11 +24,21 @@ namespace Account_CRUP_App.Controllers
         public IActionResult getAccount()
         {
             Console.WriteLine("\nIN HOME Controller\n");
-            
+            AccountCRUD accCRUD = new AccountCRUD();
+            List<string> fields = new List<string>() { "Name", "Region__c", "Type", "Customer_Rating__c" };
+            List<object> response = new List<object>();
+            response = accCRUD.Read(1,10,fields);
+            Console.WriteLine("\nress::" + response.ToString + "--");
+            foreach (object res in response)
+            {
+                Console.WriteLine("\nress::" + res.ToString);
+            }
+
+
             if (access_token!="")
             {
                 SFLogin log = new SFLogin();
-                string getData = log.getQuery("select id, name from Account order by LastModifiedDate DESC", instance_url, access_token);
+                string getData = log.getQuery("select id, name from Account order by LastModifiedDate DESC");
                 Console.WriteLine("\nHomeGETData::" + getData);
                 if (!String.IsNullOrEmpty(getData))
                 {
@@ -57,7 +67,7 @@ namespace Account_CRUP_App.Controllers
             SFLogin log = new SFLogin();
             if (access_token != "" && instance_url != "")
             {
-                string getData = log.getQuery("select id, name, Region__c, Type, Customer_Rating__c from Account where id = '" + id + "'", instance_url, access_token);
+                string getData = log.getQuery("select id, name, Region__c, Type, Customer_Rating__c from Account where id = '" + id + "'");
                 Console.WriteLine("\nHomeGETData::" + getData);
 
                 if (!String.IsNullOrEmpty(getData))
@@ -84,7 +94,7 @@ namespace Account_CRUP_App.Controllers
         public ActionResult createAccount(string input)
         {
             SFLogin log = new SFLogin();
-            bool response = log.takeQuery(input, instance_url, access_token);
+            bool response = log.takeQuery(input);
             TempData["status"] = "Account is created!";
             //singleAcc(response);
             return RedirectToAction("getAccount", "Home");
@@ -96,7 +106,7 @@ namespace Account_CRUP_App.Controllers
             SFLogin log = new SFLogin();
             if (access_token != "" && instance_url != "")
             {
-                string getData = log.getQuery("select id, name, Region__c, Type, Customer_Rating__c from Account where id = '" + id + "'", instance_url, access_token);
+                string getData = log.getQuery("select id, name, Region__c, Type, Customer_Rating__c from Account where id = '" + id + "'");
                 Console.WriteLine("\nHomeGETData::" + getData);
 
                 if (!String.IsNullOrEmpty(getData))
@@ -116,7 +126,7 @@ namespace Account_CRUP_App.Controllers
         public ActionResult updateAccount(string input)
         {
             SFLogin log = new SFLogin();
-            bool response = log.takeQuery(input, instance_url, access_token);
+            bool response = log.takeQuery(input);
             TempData["status"] = "Account is Updated!";
             //singleAcc(response);
             return RedirectToAction("getAccount", "Home");
@@ -124,7 +134,7 @@ namespace Account_CRUP_App.Controllers
         public ActionResult deleteAccount(string id)
         {
             SFLogin log = new SFLogin();
-            if(log.deleteQuery(id, instance_url, access_token))
+            if(log.deleteQuery(id))
             {
                 TempData["status"] = "Account is Deleted.";
             }
@@ -144,7 +154,8 @@ namespace Account_CRUP_App.Controllers
             access_token = config.AppSettings.Settings["access_token"].Value;
             */
             SFLogin log = new SFLogin();
-            string getData = log.getQuery("select id, name from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC", instance_url, access_token);
+            int pageNum = 1;
+            string getData = log.getQuery("select id, name from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
             Console.WriteLine("\nHomeGETData::" + getData);
             if (!String.IsNullOrEmpty(getData))
             {
@@ -154,7 +165,19 @@ namespace Account_CRUP_App.Controllers
                 if (quoteRecords.records.Count > 0)
                 {
                     ViewBag.aceess_token = access_token;
-                    ViewBag.quotes1 = quoteRecords.records;
+                    int numOfRecords = 0;
+                    if (pageNum != 1)
+                    {
+                        numOfRecords = pageNum * 10;
+                    } else
+                    {
+                        numOfRecords = pageNum * 10;
+                    }
+                    
+                    ViewBag.quotes1 = quoteRecords.records.Take(numOfRecords).ToList();
+                    int totalPage = Convert.ToInt32(Math.Ceiling((double)quoteRecords.records.Count() / 10));
+                    ViewBag.TotalQuotes = totalPage;
+                    TempData["PageNumber"] = pageNum;
                 }
             }
             return View("Quotes");
@@ -169,7 +192,7 @@ namespace Account_CRUP_App.Controllers
             if (access_token != "" && instance_url != "")
             {
                 string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c, " +
-                    "Apttus_Proposal__Presented_Date__c from Apttus_Proposal__Proposal__c where id = '" + id + "'", instance_url, access_token);
+                    "Apttus_Proposal__Presented_Date__c from Apttus_Proposal__Proposal__c where id = '" + id + "'");
                 Console.WriteLine("\nHomeGETData::" + getData);
 
                 if (!String.IsNullOrEmpty(getData))
