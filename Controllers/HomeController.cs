@@ -37,7 +37,7 @@ namespace Account_CRUP_App.Controllers
                 ViewBag.accData = response;
             } else
             {
-                TempData["errMsg"] = "Something went wrong...";
+                TempData["errMsg"] = "Access Token is missing...";
             }
             
             return View("Accounts");
@@ -45,23 +45,22 @@ namespace Account_CRUP_App.Controllers
 
         public IActionResult singleAcc(string id)
         {
-            Console.WriteLine("\nSingleAcc");
-            SFLogin log = new SFLogin();
-            if (access_token != "" && instance_url != "")
+            if (access_token != "")
             {
-                string getData = log.getQuery("select id, name, Region__c, Type, Customer_Rating__c from Account where id = '" + id + "'");
-                Console.WriteLine("\nHomeGETData::" + getData);
-
-                if (!String.IsNullOrEmpty(getData))
+                AccountCRUD accCRUD = new AccountCRUD();
+                List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c", "Phone", "Fax", "Apttus_Billing__SLASerialNumber__c", "BillingCity", "BillingState", "BillingCountry" };
+                object response = new object();
+                response = accCRUD.Read(id, fields);
+                Console.WriteLine("\nress::" + response.ToString + "--");
+                if(response != null)
                 {
-                    var accRecords = JsonConvert.DeserializeObject<AccountModel>(getData.ToString());
-                    Console.WriteLine("\nMODEL:: " + accRecords.records[0].Name);
-                    if (accRecords.records.Count > 0)
-                    {
-                        ViewBag.aceess_token = access_token;
-                        ViewBag.accDetail = accRecords.records[0];
-                    }
+                    ViewBag.aceess_token = access_token;
+                    ViewBag.accDetail = response;
                 }
+            }
+            else
+            {
+                TempData["errMsg"] = "Access Token is missing...";
             }
             return View("AccDetails");
         }
@@ -75,8 +74,12 @@ namespace Account_CRUP_App.Controllers
         //[HttpPost]
         public ActionResult createAccount(string input)
         {
+            AccountCRUD accCRUD = new AccountCRUD();
+            string response = accCRUD.Create(input);
+
+
             SFLogin log = new SFLogin();
-            bool response = log.takeQuery(input);
+            //bool response = log.takeQuery(input);
             TempData["status"] = "Account is created!";
             //singleAcc(response);
             return RedirectToAction("getAccount", "Home");

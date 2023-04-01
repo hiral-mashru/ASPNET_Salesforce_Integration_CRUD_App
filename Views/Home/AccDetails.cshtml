@@ -1,6 +1,6 @@
 ﻿@{
 
-    ViewData["Title"] = "Create Account";
+    ViewData["Title"] = "Account Detail";
 
 }
 <header>
@@ -33,16 +33,52 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="text-center">
-    <div><b>Account Detail</b><br /></div>
-
+    
     @if (ViewBag.accDetail != null)
     {
         <div class="text-center">
-            <p>Id : @ViewBag.accDetail.Id</p>
-            <p>Name : @ViewBag.accDetail.Name</p>
-            <p>Region: @ViewBag.accDetail.Region__c</p>
-            <p>Type: @ViewBag.accDetail.Type</p>
-            <p>Customer Rating: @ViewBag.accDetail.Customer_Rating__c</p>
+            <table class="table table-bordered table-responsive table-hover">
+                <tr>
+                    <td>Name</td>
+                    <td>@ViewBag.accDetail.Name</td>
+                </tr>
+                <tr>
+                    <td>Region</td>
+                    <td>@ViewBag.accDetail.Region__c</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>@ViewBag.accDetail.Type</td>
+                </tr>
+                <tr>
+                    <td>Customer Rating</td>
+                    <td>@ViewBag.accDetail.Customer_Rating__c</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>@ViewBag.accDetail.Phone</td>
+                </tr>
+                <tr>
+                    <td>Fax</td>
+                    <td>@ViewBag.accDetail.Fax</td>
+                </tr>
+                <tr>
+                    <td>SLA Serial Number</td>
+                    <td>@ViewBag.accDetail.Apttus_Billing__SLASerialNumber__c</td>
+                </tr>
+                <tr>
+                    <td>Billing City</td>
+                    <td>@ViewBag.accDetail.BillingCity</td>
+                </tr>
+                <tr>
+                    <td>Billing State</td>
+                    <td>@ViewBag.accDetail.BillingState</td>
+                </tr>
+                <tr>
+                    <td>Billing Country</td>
+                    <td>@ViewBag.accDetail.BillingCountry</td>
+                </tr>
+            </table>
         </div>
     }
     <form asp-action="logout" asp-controller="Login" method="post">

@@ -10,6 +10,8 @@ using System.Configuration;
 using System.Web.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json.Nodes;
+using System.Diagnostics.Metrics;
+using System.Drawing;
 
 namespace Account_CRUD_App.Models 
 {
@@ -105,17 +107,37 @@ namespace Account_CRUD_App.Models
                 request.Headers.Add("X-PreetyPrint", "1");
                 var response = client.SendAsync(request).Result;
                 Console.WriteLine("RESPONSE::"+response);
-                if (response.StatusCode == HttpStatusCode.OK)
+                /*if (response.StatusCode == HttpStatusCode.OK)
                 {
                     return response.Content.ReadAsStringAsync().Result;
                 } else
                 {
                     return "ERROR:: StatusCode: " + response.StatusCode + " - " + response.Content.ReadAsStringAsync().Result;
-                }
+                }*/
+                return response.Content.ReadAsStringAsync().Result;
+            }
+        }
+        public string getBoolean(string soqlQuery, HttpMethod method)
+        {
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(method, InstanceUrl + "/services/data/v57.0/sobjects/Account");
+                request.Headers.Add("Authorization", "Bearer " + AuthToken);
+                //request.Headers.Add("Content-Type", "application/json");
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
+
+                var content = new StringContent(soqlQuery, null, "application/json");
+                request.Content = content;
+
+                var response = client.SendAsync(request).Result;
+                Console.WriteLine("\n\nRESPONSE::" + response.Content.ReadAsStringAsync().Result);
+                response.EnsureSuccessStatusCode();
+                string s = response.Content.ReadAsStringAsync().Result;
+                return s;
                 
             }
         }
-
         public Boolean takeQuery(string input)
         {
             var methd = (HttpMethod?)null;

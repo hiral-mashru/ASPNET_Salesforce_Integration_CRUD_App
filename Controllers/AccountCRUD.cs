@@ -1,6 +1,7 @@
 ﻿using Account_CRUD_App.Models;
 using Account_CRUP_App.Models;
 using Newtonsoft.Json;
+using System.Drawing.Printing;
 
 namespace Account_CRUP_App.Controllers
 {
@@ -8,7 +9,38 @@ namespace Account_CRUP_App.Controllers
     {
         public string Create(object accountData)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("\nCreateMethod::" + accountData );
+            var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(accountData.ToString());
+            Console.WriteLine($"\n\nTake query: {data}");
+            string cont = "{";
+            int i = 0;
+            foreach (KeyValuePair<string, string> entry in data)
+            {
+                Console.WriteLine("\nITEM::" + entry);
+                if (i != 0)
+                {
+                    cont = cont + ",";
+                }
+                cont += "\r\n    \"" + entry.Key + "\": \"" + entry.Value + "\"";
+                Console.WriteLine("\ncont++ " + cont);
+                i++;
+            }
+            cont = cont + "\r\n}";
+            Console.WriteLine("\nSTRING::" + cont + "::");
+
+            SFLogin sFLogin = new SFLogin();
+            string response = sFLogin.getBoolean(cont, HttpMethod.Post);
+            Console.WriteLine("\nResponseCreate::"+response);
+            if (response.Contains("\"success\":true"))
+            {
+                string str = response.Substring(7, 24);
+                return str;
+            } else
+            {
+                return response;
+            }
+            return "";
+            //throw new NotImplementedException();
         }
 
         public bool Delete(string id)
@@ -18,7 +50,42 @@ namespace Account_CRUP_App.Controllers
 
         public object Read(string id, List<string> fields)
         {
-            throw new NotImplementedException();
+            string fieldStr = "";
+            int i = 0;
+            if (fields.Count > 0)
+            {
+                foreach (var field in fields)
+                {
+                    if (i != 0)
+                    {
+                        fieldStr += ", ";
+                    }
+                    fieldStr += field.ToString();
+                    i++;
+                }
+            }
+            else
+            {
+                fieldStr = "Id, Name";
+            }
+            Console.WriteLine("\nFieldStr::" + fieldStr);
+            SFLogin log = new SFLogin();
+            string getData = log.getQuery("select " + fieldStr + " from Account where id = '" + id + "'");
+            Console.WriteLine("\nHomeGETData::" + getData);
+            if (!String.IsNullOrEmpty(getData) && !(getData.Contains("errorCode")))
+            {
+                var accRecords = JsonConvert.DeserializeObject<AccountModel>(getData.ToString());
+                return accRecords.records[0];
+            }
+            else
+            {
+                string data = getData.Substring(1, getData.Length - 2);
+                Console.WriteLine("\nSubstring:" + data);
+                var error = JsonConvert.DeserializeObject<ErrorViewModel>(data.ToString());
+                Console.WriteLine($"\nError: {error}");
+                return error;
+            }
+            //throw new NotImplementedException();
         }
 
         public List<object> Read(int pageNumber, int pageSize, List<string> fields)
@@ -50,10 +117,12 @@ namespace Account_CRUP_App.Controllers
                 return accRecords.records.ToList<object>();
             } else
             {
-                //object err = { "Name": getData } ;
-                return new List<object>() { getData };
+                var error = JsonConvert.DeserializeObject<ErrorViewModel>(getData.ToString());
+                Console.WriteLine($"\nError: {error}");
+                List<object> errList = new List<object>();
+                return errList;
             }
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public string Update(string id, object accountData)

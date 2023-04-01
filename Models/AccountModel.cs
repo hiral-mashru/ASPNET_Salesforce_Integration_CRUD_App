@@ -19,5 +19,11 @@ namespace Account_CRUP_App.Models
         public string? Region__c { get; set; }
         public string? Type { get; set; }
         public string? Customer_Rating__c { get; set; }
+        public string? Phone { get; set; }
+        public string? Fax { get; set; }
+        public string? Apttus_Billing__SLASerialNumber__c { get; set; }
+        public string? BillingCity { get; set; }
+        public string? BillingState { get; set; }
+        public string? BillingCountry { get; set; }
     }
 }

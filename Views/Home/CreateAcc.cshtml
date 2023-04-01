@@ -48,6 +48,24 @@
             <option value="Customer">Customer</option>
         </select><br />
 
+        <label for="Phone"> Phone:</label>
+        <input type="text" id="Phone" name="Phone" /><br />
+
+        <label for="Fax"> Fax:</label>
+        <input type="text" id="Fax" name="Fax" /><br />
+
+        <label for="serialNum"> SLA Serial Number:</label>
+        <input type="text" id="serialNum" name="serialNum" /><br />
+
+        <label for="billingCity"> Billing City:</label>
+        <input type="text" id="billingCity" name="billingCity" /><br />
+
+        <label for="billingState"> Billing State:</label>
+        <input type="text" id="billingState" name="billingState" /><br />
+
+        <label for="billingCountry"> Billing Country:</label>
+        <input type="text" id="billingCountry" name="billingCountry" /><br />
+
         <input type="submit" id="submit" name="submit" value="Submit" />
     </form>
    
@@ -59,8 +77,14 @@
             var region = this.elements.region;
             var rating = this.elements.rating;
             var type = this.elements.type;
+            var Phone = this.elements.Phone;
+            var Fax = this.elements.Fax;
+            var serialNum = this.elements.serialNum;
+            var billingCity = this.elements.billingCity;
+            var billingState = this.elements.billingState;
+            var billingCountry = this.elements.billingCountry;
             alert("ALERT!!!");
-            var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value };
+            var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
             alert("ALERT!!!" + newAcc.Name + "--" + JSON.stringify(newAcc));
             $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function (data) {
                 console.log("---" + data + "---");
