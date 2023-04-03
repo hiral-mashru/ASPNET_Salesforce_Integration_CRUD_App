@@ -70,7 +70,7 @@
                 alert("ALERT!!!");
                 var newAcc = { "Id": id.value,"Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value };
                 alert("ALERT!!!" + newAcc.Id + "--" + JSON.stringify(newAcc));
-                $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function (data) {
+                $.post("/Home/createAccount", { input: JSON.stringify(newAcc), id: id.value }, function (data) {
                     console.log("---" + data + "---");
                     alert("DATA-" + data);
                 });

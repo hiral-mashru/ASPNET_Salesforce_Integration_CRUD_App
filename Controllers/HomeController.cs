@@ -8,11 +8,16 @@ using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
 using System.Web.Helpers;
 using Account_CRUD_App.Controllers;
+using System.Linq;
 
 namespace Account_CRUP_App.Controllers
 {
     public class HomeController : Controller
     {
+        AccountCRUD accCRUD = new AccountCRUD();
+        //List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c" };
+        List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c", "Phone", "Fax", "Apttus_Billing__SLASerialNumber__c", "BillingCity", "BillingState", "BillingCountry" };
+
         private readonly ILogger<HomeController> _logger;
         public static string access_token;
         public static string instance_url;
@@ -25,8 +30,6 @@ namespace Account_CRUP_App.Controllers
         {
             if (access_token != "") { 
                 Console.WriteLine("\nIN HOME Controller\n");
-                AccountCRUD accCRUD = new AccountCRUD();
-                List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c" };
                 List<object> response = new List<object>();
                 response = accCRUD.Read(1, 10, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
@@ -47,8 +50,11 @@ namespace Account_CRUP_App.Controllers
         {
             if (access_token != "")
             {
-                AccountCRUD accCRUD = new AccountCRUD();
-                List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c", "Phone", "Fax", "Apttus_Billing__SLASerialNumber__c", "BillingCity", "BillingState", "BillingCountry" };
+                if (TempData.ContainsKey("createResponse"))
+                {
+                    Console.WriteLine("\nAfter Create::" + id);
+                }
+                //AccountCRUD accCRUD = new AccountCRUD();
                 object response = new object();
                 response = accCRUD.Read(id, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
@@ -74,15 +80,19 @@ namespace Account_CRUP_App.Controllers
         //[HttpPost]
         public ActionResult createAccount(string input)
         {
-            AccountCRUD accCRUD = new AccountCRUD();
+            //AccountCRUD accCRUD = new AccountCRUD();
             string response = accCRUD.Create(input);
-
-
-            SFLogin log = new SFLogin();
-            //bool response = log.takeQuery(input);
-            TempData["status"] = "Account is created!";
-            //singleAcc(response);
-            return RedirectToAction("getAccount", "Home");
+            if (response.Length == 18)
+            {
+                TempData["createResponse"] = response;
+                Console.WriteLine("INNNN");
+                singleAcc(response);
+                return RedirectToAction("singleAcc", "Home", new { id = response });
+            } else
+            {
+                return RedirectToAction("createAccount", "Home");
+            }
+            
         }
 
         public IActionResult showUpdateAccount(string id)
@@ -108,13 +118,29 @@ namespace Account_CRUP_App.Controllers
             return View("UpdateAccount");
         }
 
-        public ActionResult updateAccount(string input)
+        public ActionResult updateAccount(string input, string id)
         {
-            SFLogin log = new SFLogin();
-            bool response = log.takeQuery(input);
-            TempData["status"] = "Account is Updated!";
+            Console.WriteLine("\nUPDATE:: " + id+" :: "+input);
+            string response = accCRUD.Update(id, input);
+            Console.WriteLine("\nAfter Update::"+ response);
+            if (response.Length == 18)
+            {
+                TempData["createResponse"] = response;
+                Console.WriteLine("INNNN");
+                singleAcc(response);
+                return RedirectToAction("singleAcc", "Home", new { id = response });
+            }
+            else
+            {
+                return RedirectToAction("createAccount", "Home");
+            }
+
+
+            //SFLogin log = new SFLogin();
+            //bool response = log.takeQuery(input);
+            //TempData["status"] = "Account is Updated!";
             //singleAcc(response);
-            return RedirectToAction("getAccount", "Home");
+            //return RedirectToAction("getAccount", "Home");
         }
         public ActionResult deleteAccount(string id)
         {
