@@ -117,11 +117,11 @@ namespace Account_CRUD_App.Models
                 return response.Content.ReadAsStringAsync().Result;
             }
         }
-        public string getBoolean(string soqlQuery, HttpMethod method)
+        public string getBoolean(string soqlQuery, HttpMethod method, string urlId)
         {
             using (var client = new HttpClient())
             {
-                var request = new HttpRequestMessage(method, InstanceUrl + "/services/data/v57.0/sobjects/Account");
+                var request = new HttpRequestMessage(method, InstanceUrl + "/services/data/v57.0/sobjects/Account"+urlId);
                 request.Headers.Add("Authorization", "Bearer " + AuthToken);
                 //request.Headers.Add("Content-Type", "application/json");
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

@@ -30,7 +30,7 @@ namespace Account_CRUP_App.Controllers
             Console.WriteLine("\nSTRING::" + cont + "::");
 
            
-            string response = log.getBoolean(cont, HttpMethod.Post);
+            string response = log.getBoolean(cont, HttpMethod.Post, "");
             Console.WriteLine("\nResponseCreate::"+response);
             if (response.Contains("\"success\":true"))
             {
@@ -47,7 +47,15 @@ namespace Account_CRUP_App.Controllers
 
         public bool Delete(string id)
         {
-            throw new NotImplementedException();
+            if (log.deleteQuery(id))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+            
+            //throw new NotImplementedException();
         }
 
         public object Read(string id, List<string> fields)
@@ -127,12 +135,14 @@ namespace Account_CRUP_App.Controllers
             //throw new NotImplementedException();
         }
 
+        
         public string Update(string id, object accountData)
         {
             Console.WriteLine("\nUpdateMethod::" + accountData);
+            
+            string idStr = "";
             var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(accountData.ToString());
             Console.WriteLine($"\n\nTake query: {data}");
-            string idStr = "";
             string cont = "{";
             int i = 0;
             foreach (KeyValuePair<string, string> entry in data)
@@ -152,10 +162,10 @@ namespace Account_CRUP_App.Controllers
                 i++;
             }
             cont = cont + "\r\n}";
-            Console.WriteLine("\nSTRING::" + cont + "::");
+            Console.WriteLine("\nSTRING::" + cont + "::" + idStr);
 
 
-            string response = log.getBoolean(cont, HttpMethod.Patch);
+            string response = log.getBoolean(cont, HttpMethod.Patch, idStr);
             Console.WriteLine("\nResponseCreate::" + response);
             if (response.Contains("\"success\":true"))
             {

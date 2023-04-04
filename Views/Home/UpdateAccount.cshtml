@@ -34,7 +34,7 @@
         <form method="post" id="myForm">
             <input type="text" id="id" name="id" value="@ViewBag.accDetail.Id" hidden />
             <label for="name"> Name:</label>
-            <input type="text" id="name" name="name" value="@ViewBag.accDetail.Name" /><br />
+            <input type="text" id="name" name="name" value="@ViewBag.accDetail.Name" required /><br />
 
             <label for="region">Region:</label>
             <select name="region" id="region">
@@ -57,6 +57,24 @@
                 <option value="Customer">Customer</option>
             </select><br />
 
+            <label for="Phone"> Phone:</label>
+            <input type="text" id="Phone" name="Phone" value="@ViewBag.accDetail.Phone" /><br />
+
+            <label for="Fax"> Fax:</label>
+            <input type="text" id="Fax" name="Fax" value="@ViewBag.accDetail.Fax" /><br />
+
+            <label for="serialNum"> SLA Serial Number:</label>
+            <input type="text" id="serialNum" name="serialNum" value="@ViewBag.accDetail.Apttus_Billing__SLASerialNumber__c" /><br />
+
+            <label for="billingCity"> Billing City:</label>
+            <input type="text" id="billingCity" name="billingCity" value="@ViewBag.accDetail.BillingCity" /><br />
+
+            <label for="billingState"> Billing State:</label>
+            <input type="text" id="billingState" name="billingState" value="@ViewBag.accDetail.BillingState" /><br />
+
+            <label for="billingCountry"> Billing Country:</label>
+            <input type="text" id="billingCountry" name="billingCountry" value="@ViewBag.accDetail.BillingCountry" /><br />
+
             <input type="submit" id="submit" name="submit" value="Submit" />
         </form>
         <script type="text/javascript">
@@ -67,8 +85,14 @@
                 var region = this.elements.region;
                 var rating = this.elements.rating;
                 var type = this.elements.type;
+                var Phone = this.elements.Phone;
+                var Fax = this.elements.Fax;
+                var serialNum = this.elements.serialNum;
+                var billingCity = this.elements.billingCity;
+                var billingState = this.elements.billingState;
+                var billingCountry = this.elements.billingCountry;
                 alert("ALERT!!!");
-                var newAcc = { "Id": id.value,"Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value };
+                var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
                 alert("ALERT!!!" + newAcc.Id + "--" + JSON.stringify(newAcc));
                 $.post("/Home/createAccount", { input: JSON.stringify(newAcc), id: id.value }, function (data) {
                     console.log("---" + data + "---");

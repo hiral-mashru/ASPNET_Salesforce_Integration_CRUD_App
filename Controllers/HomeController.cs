@@ -97,24 +97,14 @@ namespace Account_CRUP_App.Controllers
 
         public IActionResult showUpdateAccount(string id)
         {
-            Console.WriteLine("\nUpdateAcc");
-            SFLogin log = new SFLogin();
-            if (access_token != "" && instance_url != "")
+            object response = new object();
+            response = accCRUD.Read(id, fields);
+            if (response != null)
             {
-                string getData = log.getQuery("select id, name, Region__c, Type, Customer_Rating__c from Account where id = '" + id + "'");
-                Console.WriteLine("\nHomeGETData::" + getData);
-
-                if (!String.IsNullOrEmpty(getData))
-                {
-                    var accRecords = JsonConvert.DeserializeObject<AccountModel>(getData.ToString());
-                    Console.WriteLine("\nMODEL:: " + accRecords.records[0].Name);
-                    if (accRecords.records.Count > 0)
-                    {
-                        ViewBag.aceess_token = access_token;
-                        ViewBag.accDetail = accRecords.records[0];
-                    }
-                }
+                ViewBag.aceess_token = access_token;
+                ViewBag.accDetail = response;
             }
+            
             return View("UpdateAccount");
         }
 
@@ -135,20 +125,14 @@ namespace Account_CRUP_App.Controllers
                 return RedirectToAction("createAccount", "Home");
             }
 
-
-            //SFLogin log = new SFLogin();
-            //bool response = log.takeQuery(input);
-            //TempData["status"] = "Account is Updated!";
-            //singleAcc(response);
-            //return RedirectToAction("getAccount", "Home");
         }
         public ActionResult deleteAccount(string id)
         {
-            SFLogin log = new SFLogin();
-            if(log.deleteQuery(id))
+            if(accCRUD.Delete(id))
             {
                 TempData["status"] = "Account is Deleted.";
             }
+
             return RedirectToAction("getAccount","Home");
         }
         public IActionResult Index()
