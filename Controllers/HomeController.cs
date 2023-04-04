@@ -15,7 +15,6 @@ namespace Account_CRUP_App.Controllers
     public class HomeController : Controller
     {
         AccountCRUD accCRUD = new AccountCRUD();
-        //List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c" };
         List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c", "Phone", "Fax", "Apttus_Billing__SLASerialNumber__c", "BillingCity", "BillingState", "BillingCountry" };
 
         private readonly ILogger<HomeController> _logger;
@@ -33,10 +32,7 @@ namespace Account_CRUP_App.Controllers
                 List<object> response = new List<object>();
                 response = accCRUD.Read(1, 10, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
-                foreach (object res in response)
-                {
-                    Console.WriteLine("\nress::" + res.ToString);
-                }
+                
                 ViewBag.accData = response;
             } else
             {

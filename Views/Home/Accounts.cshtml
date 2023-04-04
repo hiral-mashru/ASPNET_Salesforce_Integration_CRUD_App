@@ -61,6 +61,12 @@
             }
         }
     </table>
+        <form asp-action="logout" asp-controller="Login" method="post">
+            <input type="submit" id="previous" name="previous" value="Previous" />
+        </form>
+        <form asp-action="logout" asp-controller="Login" method="post">
+            <input type="submit" id="next" name="next" value="Next" />
+        </form>
     }
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
