@@ -61,13 +61,53 @@
             }
         }
     </table>
-        <form asp-action="logout" asp-controller="Login" method="post">
-            <input type="submit" id="previous" name="previous" value="Previous" />
-        </form>
-        <form asp-action="logout" asp-controller="Login" method="post">
-            <input type="submit" id="next" name="next" value="Next" />
-        </form>
+        <div class="container">
+            <div id="increment-count">
+                <input type="button" id="up-arrow" value="Next" />
+            </div>
+            <div id="total-count"> </div>
+            <div id="decrement-count">
+                <input type="button" id="down-arrow" value="Previous" />
+            </div>
+            
+        </div>
     }
+    <script>
+        const incrementCount = document.getElementById("increment-count");
+        const decrementCount = document.getElementById("decrement-count");
+
+        // Select total count
+        const totalCount = document.getElementById("total-count");
+
+        // Variable to track count
+        var count = 1;
+
+        // Display initial count value
+        totalCount.innerHTML = count;
+
+        // Function to increment count
+        const handleIncrement = () => {
+            count++;
+            totalCount.innerHTML = count;
+            passCount(count);
+        };
+
+        // Function to decrement count
+        const handleDecrement = () => {
+            count--;
+            totalCount.innerHTML = count;
+        };
+
+        // Add click event to buttons
+        incrementCount.addEventListener("click", handleIncrement);
+        decrementCount.addEventListener("click", handleDecrement);
+
+        function passCount(count){
+            $.get("/Home/getAccount", { input: count }, function (data) {
+                
+            });
+        }
+    </script>
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
     </form>
