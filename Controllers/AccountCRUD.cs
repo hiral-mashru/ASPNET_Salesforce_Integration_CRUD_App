@@ -117,8 +117,11 @@ namespace Account_CRUP_App.Controllers
             {
                 fieldStr = "Id, Name";
             }
-            Console.WriteLine("\nFieldStr::"+fieldStr);
-            
+            Console.WriteLine("\nFieldStr::"+fieldStr+"::"+pageNumber);
+            if (pageNumber == 0)
+            {
+                pageNumber = 1;
+            }
             string getData = log.getQuery("select "+fieldStr+" from Account order by LastModifiedDate DESC limit "+pageSize+" offset "+((pageNumber-1)*pageSize));
             Console.WriteLine("\nHomeGETData::" + getData);
             if (!String.IsNullOrEmpty(getData) && !(getData.Contains("ERROR::")))

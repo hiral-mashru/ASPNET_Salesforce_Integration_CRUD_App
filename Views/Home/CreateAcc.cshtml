@@ -86,9 +86,7 @@
             alert("ALERT!!!");
             var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
             alert("ALERT!!!" + newAcc.Name + "--" + JSON.stringify(newAcc));
-            $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function (data) {
-                console.log("---" + data + "---");
-                alert("DATA-" + data);
+            $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function () {
             });
             
         }

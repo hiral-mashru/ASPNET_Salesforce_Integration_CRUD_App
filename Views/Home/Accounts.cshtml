@@ -69,8 +69,9 @@
             <div id="decrement-count">
                 <input type="button" id="down-arrow" value="Previous" />
             </div>
-            
+            <a href=""/>
         </div>
+        
     }
     <script>
         const incrementCount = document.getElementById("increment-count");
@@ -78,9 +79,9 @@
 
         // Select total count
         const totalCount = document.getElementById("total-count");
-
+        console.log("Count::" + '@TempData["pageSize"]');
         // Variable to track count
-        var count = 1;
+        var count = '@TempData["pageSize"]';
 
         // Display initial count value
         totalCount.innerHTML = count;
@@ -96,6 +97,7 @@
         const handleDecrement = () => {
             count--;
             totalCount.innerHTML = count;
+            passCount(count);
         };
 
         // Add click event to buttons
@@ -103,8 +105,9 @@
         decrementCount.addEventListener("click", handleDecrement);
 
         function passCount(count){
+            
             $.get("/Home/getAccount", { input: count }, function (data) {
-                
+                //window.location.reload();
             });
         }
     </script>

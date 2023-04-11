@@ -25,14 +25,16 @@ namespace Account_CRUP_App.Controllers
             _logger = logger;
         }
 
-        public IActionResult getAccount()
+        public IActionResult getAccount(int input)
         {
-            if (access_token != "") { 
-                Console.WriteLine("\nIN HOME Controller\n");
-                List<object> response = new List<object>();
-                response = accCRUD.Read(1, 10, fields);
-                Console.WriteLine("\nress::" + response.ToString + "--");
+            if (access_token != "") {
+                input = (input == 0) ? 1 : input;
                 
+                Console.WriteLine("\nIN HOME Controller::"+input);
+                List<object> response = new List<object>();
+                response = accCRUD.Read(input, 10, fields);
+                Console.WriteLine("\nress::" + response.ToString + "--");
+                TempData["pageSize"] = input;
                 ViewBag.accData = response;
             } else
             {
@@ -83,7 +85,7 @@ namespace Account_CRUP_App.Controllers
                 TempData["createResponse"] = response;
                 Console.WriteLine("INNNN");
                 singleAcc(response);
-                return RedirectToAction("singleAcc", "Home", new { id = response });
+                return RedirectToAction("singleAcc", "Home", new { response });
             } else
             {
                 return RedirectToAction("createAccount", "Home");
