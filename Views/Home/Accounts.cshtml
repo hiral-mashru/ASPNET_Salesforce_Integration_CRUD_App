@@ -37,30 +37,6 @@
     }
     else
     {
-    <table class="table table-bordered table-responsive table-hover">
-        <tr>
-            <th>Account Name </th>
-            <th>Region </th>
-            <th>Type </th>
-            <th>Customer Rating </th>
-            <th>Update Record</th>
-            <th>Delete Record</th>
-        </tr>
-        @if (ViewBag.accData != null)
-        {
-            @foreach (var d in (ViewBag.accData))
-            {
-                <tr>
-                    <td><a asp-action="singleAcc" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
-                    <td>@d.Region__c</td>
-                    <td>@d.Type</td>
-                    <td>@d.Customer_Rating__c</td>
-                    <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="showUpdateAccount" asp-route-Id=@d.Id>Update</a></td>
-                    <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="deleteAccount" asp-route-Id=@d.Id>Delete</a></td>
-                </tr>
-            }
-        }
-    </table>
         <div class="container">
             <div id="increment-count">
                 <input type="button" id="up-arrow" value="Next" />
@@ -69,45 +45,91 @@
             <div id="decrement-count">
                 <input type="button" id="down-arrow" value="Previous" />
             </div>
-            <a href=""/>
         </div>
-        
+        <div>
+            <input type="submit" id="previous" onclick="previous()" value="Previous" />
+            <input type="submit" id="next" onclick="next()" value="Next" />
+        </div>
+        <table class="table table-bordered table-responsive table-hover">
+            <tr>
+                <th>Account Name </th>
+                <th>Region </th>
+                <th>Type </th>
+                <th>Customer Rating </th>
+                <th>Update Record</th>
+                <th>Delete Record</th>
+            </tr>
+            @if (TempData.ContainsKey("totalAcc") && TempData["totalAcc"] != "0")
+            {
+                <div id="tBody"></div>
+                @if (ViewBag.accData != null)
+                {
+                    @foreach (var d in (ViewBag.accData))
+                    {
+                        <tr>
+                            <td><a asp-action="singleAcc" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
+                            <td>@d.Region__c</td>
+                            <td>@d.Type</td>
+                            <td>@d.Customer_Rating__c</td>
+                            <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="showUpdateAccount" asp-route-Id=@d.Id>Update</a></td>
+                            <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="deleteAccount" asp-route-Id=@d.Id>Delete</a></td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+       
     }
     <script>
+        var pageNum = 1;
+        var pageSize = 10;
+        var totalPage = Math.ceil(('@TempData["totalAcc"]') / pageSize));
+        alert(pageNum+"::"+totalPage);
+        var currentPageNum = 1;
+
+        function previous(){
+
+        }
+
+        function next(){
+
+        }
+
         const incrementCount = document.getElementById("increment-count");
         const decrementCount = document.getElementById("decrement-count");
 
         // Select total count
         const totalCount = document.getElementById("total-count");
-        console.log("Count::" + '@TempData["pageSize"]');
+        
         // Variable to track count
-        var count = '@TempData["pageSize"]';
-
+        var pageNum = 1;
+        
         // Display initial count value
-        totalCount.innerHTML = count;
-
+        totalCount.innerHTML = pageNum;
+        passCount(pageNum);
         // Function to increment count
         const handleIncrement = () => {
-            count++;
-            totalCount.innerHTML = count;
-            passCount(count);
+            pageNum++;
+            totalCount.innerHTML = pageNum;
+            passCount(pageNum);
         };
 
         // Function to decrement count
         const handleDecrement = () => {
-            count--;
-            totalCount.innerHTML = count;
-            passCount(count);
+            pageNum--;
+            totalCount.innerHTML = pageNum;
+            passCount(pageNum);
         };
 
         // Add click event to buttons
         incrementCount.addEventListener("click", handleIncrement);
         decrementCount.addEventListener("click", handleDecrement);
 
-        function passCount(count){
+        function passCount(pageNum) {
             
-            $.get("/Home/getAccount", { input: count }, function (data) {
-                //window.location.reload();
+            $.get("/Home/pagination", { pageNum: pageNum, pageSize: 10 }, function (data) {
+                document.getElementById("tBody").innerHTML =
+                    "<tr><td>"+data+"</td></tr>";
             });
         }
     </script>

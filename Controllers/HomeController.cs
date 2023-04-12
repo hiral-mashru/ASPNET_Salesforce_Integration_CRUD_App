@@ -25,23 +25,30 @@ namespace Account_CRUP_App.Controllers
             _logger = logger;
         }
 
-        public IActionResult getAccount(int input)
+        public IActionResult getAccount()
         {
             if (access_token != "") {
-                input = (input == 0) ? 1 : input;
-                
-                Console.WriteLine("\nIN HOME Controller::"+input);
+                Console.WriteLine("\nIN HOME Controller::");
                 List<object> response = new List<object>();
-                response = accCRUD.Read(input, 10, fields);
+                response = accCRUD.Read(1, 10000, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
-                TempData["pageSize"] = input;
-                ViewBag.accData = response;
+                TempData["totalAcc"] = response.Count;
             } else
             {
                 TempData["errMsg"] = "Access Token is missing...";
             }
             
             return View("Accounts");
+        }
+
+        public List<object> pagination(int pageNum, int pageSize)
+        {
+            Console.WriteLine("\n\nPageNum::"+pageNum+"::"+pageSize);
+            List<object> response = new List<object>();
+            response = accCRUD.Read(pageNum, pageSize, fields);
+            Console.WriteLine("\nress::" + response.ToString + "--");
+            //ViewBag.accData = response;
+            return response;
         }
 
         public IActionResult singleAcc(string id)
