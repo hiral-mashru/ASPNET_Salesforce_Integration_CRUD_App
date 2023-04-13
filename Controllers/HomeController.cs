@@ -41,7 +41,7 @@ namespace Account_CRUP_App.Controllers
             return View("Accounts");
         }
 
-        public List<object> pagination(int pageNum, int pageSize)
+        public List<object> accList(int pageNum, int pageSize)
         {
             Console.WriteLine("\n\nPageNum::"+pageNum+"::"+pageSize);
             List<object> response = new List<object>();
