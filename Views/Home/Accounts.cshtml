@@ -137,8 +137,11 @@
         function passCount(pageNum) {
             alert("In PassCount:"+pageNum);
             $.get("/Home/accList", { pageNum: pageNum, pageSize: pageSize }, function (data) {
-                document.getElementById("tBody").innerHTML =
-                    "<tr><td>hii "+data+"</td></tr>";
+                //document.getElementById("tBody").innerHTML ="<tr><td>hii "+data+"</td></tr>";
+                alert("DATA::"+data);
+                for(d of data){
+                    alert("d::"+d+"::"+d.Id);
+                }
             });
         }
     </script>

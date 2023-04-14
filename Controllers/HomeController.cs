@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Web.Helpers;
 using Account_CRUD_App.Controllers;
 using System.Linq;
+using System.Drawing;
 
 namespace Account_CRUP_App.Controllers
 {
@@ -144,18 +145,9 @@ namespace Account_CRUP_App.Controllers
         {
             Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::"+access_token);
             
-            /*Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            
-            if (config.AppSettings.Settings["access_token"].Value != "")
-            {
-                Console.WriteLine("\nIndex CONFIGG::" + config.AppSettings.Settings["access_token"].Value);
-            }
-            instance_url = config.AppSettings.Settings["instance_url"].Value;
-            access_token = config.AppSettings.Settings["access_token"].Value;
-            */
             SFLogin log = new SFLogin();
             int pageNum = 1;
-            string getData = log.getQuery("select id, name from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
+            string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
             Console.WriteLine("\nHomeGETData::" + getData);
             if (!String.IsNullOrEmpty(getData))
             {
@@ -173,8 +165,8 @@ namespace Account_CRUP_App.Controllers
                     {
                         numOfRecords = pageNum * 10;
                     }
-                    
-                    ViewBag.quotes1 = quoteRecords.records.Take(numOfRecords).ToList();
+
+                    ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
                     int totalPage = Convert.ToInt32(Math.Ceiling((double)quoteRecords.records.Count() / 10));
                     ViewBag.TotalQuotes = totalPage;
                     TempData["PageNumber"] = pageNum;
@@ -208,6 +200,27 @@ namespace Account_CRUP_App.Controllers
             }
             return View("QuoteDetails");
         }
+
+        public ActionResult reprice(string id)
+        {
+            SFLogin log = new SFLogin();
+            string getCart = "select Id from Apttus_Config2__ProductConfiguration__c where Apttus_QPConfig__Proposald__r.Id='" + id + "' limit 1";
+            string gCart = log.getQuery(getCart);
+            var cart = JsonConvert.DeserializeObject<QuoteModel>(gCart.ToString());
+            if (cart.records[0] != null)
+            {
+                Console.WriteLine("Cart Id " + cart.records[0].Id);
+                bool cartCheck = log.repriceCart(cart.records[0].Id);
+                Console.WriteLine("cart Check: " + cartCheck);
+                if (cartCheck = true)
+                {
+                    return BadRequest(new { Message = "The Cart is finalized." });
+
+                }
+            }
+            return RedirectToAction("singleQuote", "Home", new { id });
+        }
+    }
 
         public IActionResult Login()
         {

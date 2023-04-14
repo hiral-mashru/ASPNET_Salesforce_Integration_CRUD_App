@@ -31,16 +31,18 @@
     <div><b>Quotes</b><br /></div>
     <table class="table table-bordered table-responsive table-hover">
         <tr>
-            <th>Quote Id </th>
             <th>Quote Name </th>
+            <th>Proposal Stage</th>
+            <th>Proposal Net Amount</th>
         </tr>
         @if (ViewBag.quotes1 != null)
         {
             @foreach (var d in (ViewBag.quotes1))
             {
                 <tr>
-                    <td>@d.Id</td>
                     <td><a asp-action="singleQuote" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
+                    <td>@d.Apttus_Proposal__Approval_Stage__c</td>
+                    <td>@d.Apttus_Proposal__Net_Amount__c</td>
                 </tr>
             }
         }
@@ -56,22 +58,7 @@
         }
     </script>
 
-    <form>
-        <div id="ShowButton">
-            @for (int i = 1; i <= ViewBag.QuotesCount; i++)
-            {
-                <input type="button" id="@i" value="@i" onclick="SortData(@i)" />
-            }
-        </div>
-        <select class="pagesize" onchange="Display()" id="drpdwn">
-            <option selected="selected" value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-        </select>
-        <input type="text" id="Search" />
-    </form>
+    
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
     </form>

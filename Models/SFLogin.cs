@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json.Nodes;
 using System.Diagnostics.Metrics;
 using System.Drawing;
+using System.Xml;
 
 namespace Account_CRUD_App.Models 
 {
@@ -214,6 +215,57 @@ namespace Account_CRUD_App.Models
             Console.WriteLine("\nDelete::"+response.Content.ReadAsStringAsync().Result);
 
             return true;
+        }
+
+        public bool repriceCart(string id)
+        {
+            using (var client = new HttpClient())
+            {
+                string url = "https://na209.salesforce.com/services/Soap/class/Apttus_CPQApi/CPQWebService";
+                //string action = "https://na209.salesforce.com/services/Soap/class/Apttus_CPQApi/CPQ/FinalizeCartRequestDO";
+                XmlDocument soapEnvelopeDocument = new XmlDocument();
+                soapEnvelopeDocument.LoadXml(
+                @"<soapenv:Envelope
+                    xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""
+                    xmlns:cpq = ""http://soap.sforce.com/schemas/class/Apttus_CPQApi/CPQWebService""
+                    xmlns:cpq1 = ""http://soap.sforce.com/schemas/class/Apttus_CPQApi/CPQ"">
+                    <soapenv:Header>
+                        <cpq:SessionHeader>
+                            <cpq:sessionId>" + AuthToken + "</cpq:sessionId>" +
+                "</cpq:SessionHeader>" +
+                "</soapenv:Header>" +
+                "<soapenv:Body>" +
+                "<cpq:finalizeCart>" +
+                "<cpq:request>" +
+                "<cpq1:CartId>" + id + "</cpq1:CartId>" +
+                "</cpq:request>" +
+                "</cpq:finalizeCart>" +
+                "</soapenv:Body>" +
+                "</soapenv:Envelope>");
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.Headers.Add("SOAPAction", "FinalizeCartRequestDO");
+                webRequest.ContentType = "text/xml;charset=\"utf-8\"";
+                webRequest.Accept = "text/xml";
+                webRequest.Method = "POST";
+                //InsertSoapEnvelopeIntoWebRequest(soapEnvelopeDocument, webRequest);
+                //var response = client.SendAsync(webRequest).Result();
+                //IAsyncResult asyncResult = webRequest.BeginGetResponse(null, null);
+                //asyncResult.AsyncWaitHandle.WaitOne();
+                string soapResult;
+                using (WebResponse webResponse = webRequest.GetResponse())
+                {
+                    using (StreamReader rd = new StreamReader(webResponse.GetResponseStream()))
+                    {
+                        soapResult = rd.ReadToEnd();
+                    }
+                    Console.Write(webResponse);
+                }
+                if (soapResult != null)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
