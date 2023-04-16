@@ -3,13 +3,6 @@ using Account_CRUP_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Configuration;
-using Newtonsoft.Json.Linq;
-using System.Text.Json.Nodes;
-using System.Web.Helpers;
-using Account_CRUD_App.Controllers;
-using System.Linq;
-using System.Drawing;
 
 namespace Account_CRUP_App.Controllers
 {
@@ -30,10 +23,12 @@ namespace Account_CRUP_App.Controllers
         {
             if (access_token != "") {
                 Console.WriteLine("\nIN HOME Controller::");
-                List<object> response = new List<object>();
+                List<Records> response = new List<Records>();
                 response = accCRUD.Read(1, 10000, fields);
-                Console.WriteLine("\nress::" + response.ToString + "--");
-                TempData["totalAcc"] = response.Count;
+                Console.WriteLine("\nress::" + response.ToString() + "--" + response.Count());
+                ViewBag.accData = response;
+                //TempData["totalAcc"] = response.Count();
+                ViewBag.totalAcc = response.Count();
             } else
             {
                 TempData["errMsg"] = "Access Token is missing...";
@@ -42,14 +37,15 @@ namespace Account_CRUP_App.Controllers
             return View("Accounts");
         }
 
-        public List<object> accList(int pageNum, int pageSize)
+        public JsonResult accList(int pageNum, int pageSize)
         {
-            Console.WriteLine("\n\nPageNum::"+pageNum+"::"+pageSize);
-            List<object> response = new List<object>();
+            Console.WriteLine("\n\nPageNum::" + pageNum + "::" + pageSize);
+            List<Records> response = new List<Records>();
             response = accCRUD.Read(pageNum, pageSize, fields);
             Console.WriteLine("\nress::" + response.ToString + "--");
+            
             //ViewBag.accData = response;
-            return response;
+            return Json(response);
         }
 
         public IActionResult singleAcc(string id)
@@ -61,7 +57,7 @@ namespace Account_CRUP_App.Controllers
                     Console.WriteLine("\nAfter Create::" + id);
                 }
                 //AccountCRUD accCRUD = new AccountCRUD();
-                object response = new object();
+                Records response = new Records();
                 response = accCRUD.Read(id, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
                 if(response != null)
@@ -103,7 +99,7 @@ namespace Account_CRUP_App.Controllers
 
         public IActionResult showUpdateAccount(string id)
         {
-            object response = new object();
+            Records response = new Records();
             response = accCRUD.Read(id, fields);
             if (response != null)
             {
@@ -193,6 +189,10 @@ namespace Account_CRUP_App.Controllers
                     Console.WriteLine("\nMODEL:: " + quoteRecords.records[0].Name);
                     if (quoteRecords.records.Count > 0)
                     {
+                        if (TempData.ContainsKey("isReprised"))
+                        {
+                            TempData["reprised"] = "The Cart is Reprised.";
+                        }
                         ViewBag.aceess_token = access_token;
                         ViewBag.quoteDetail = quoteRecords.records[0];
                     }
@@ -204,8 +204,9 @@ namespace Account_CRUP_App.Controllers
         public ActionResult reprice(string id)
         {
             SFLogin log = new SFLogin();
-            string getCart = "select Id from Apttus_Config2__ProductConfiguration__c where Apttus_QPConfig__Proposald__r.Id='" + id + "' limit 1";
+            string getCart = "select Id from Apttus_Config2__ProductConfiguration__c where Apttus_QPConfig__Proposald__r.Id='" + id + "' ORDER BY LastModifiedDate DESC limit 1";
             string gCart = log.getQuery(getCart);
+            Console.WriteLine("\nGCART:: " + gCart);
             var cart = JsonConvert.DeserializeObject<QuoteModel>(gCart.ToString());
             if (cart.records[0] != null)
             {
@@ -214,13 +215,13 @@ namespace Account_CRUP_App.Controllers
                 Console.WriteLine("cart Check: " + cartCheck);
                 if (cartCheck = true)
                 {
-                    return BadRequest(new { Message = "The Cart is finalized." });
-
+                    TempData["isReprised"] = "The Cart is Reprised.";
+                    //return BadRequest(new { Message = "The Cart is Reprised." });
                 }
             }
             return RedirectToAction("singleQuote", "Home", new { id });
         }
-    }
+    
 
         public IActionResult Login()
         {

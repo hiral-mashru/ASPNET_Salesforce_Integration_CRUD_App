@@ -1,7 +1,7 @@
 ﻿using Account_CRUD_App.Models;
 using Account_CRUP_App.Models;
+using Account_CRUP_App.Models;
 using Newtonsoft.Json;
-using System.Drawing.Printing;
 
 namespace Account_CRUP_App.Controllers
 {
@@ -58,7 +58,7 @@ namespace Account_CRUP_App.Controllers
             //throw new NotImplementedException();
         }
 
-        public object Read(string id, List<string> fields)
+        public Records Read(string id, List<string> fields)
         {
             string fieldStr = "";
             int i = 0;
@@ -91,14 +91,14 @@ namespace Account_CRUP_App.Controllers
             {
                 string data = getData.Substring(1, getData.Length - 2);
                 Console.WriteLine("\nSubstring:" + data);
-                var error = JsonConvert.DeserializeObject<ErrorViewModel>(data.ToString());
-                Console.WriteLine($"\nError: {error}");
-                return error;
+                //var error = JsonConvert.DeserializeObject<ErrorViewModel>(data.ToString());
+                //Console.WriteLine($"\nError: {error}");
+                return null;
             }
             //throw new NotImplementedException();
         }
 
-        public List<object> Read(int pageNumber, int pageSize, List<string> fields)
+        public List<Records> Read(int pageNumber, int pageSize, List<string> fields)
         {
             string fieldStr = "";
             int i = 0;
@@ -127,12 +127,12 @@ namespace Account_CRUP_App.Controllers
             if (!String.IsNullOrEmpty(getData) && !(getData.Contains("ERROR::")))
             {
                 var accRecords = JsonConvert.DeserializeObject<AccountModel>(getData.ToString());
-                return accRecords.records.ToList<object>();
+                return accRecords.records.ToList<Records>();
             } else
             {
                 var error = JsonConvert.DeserializeObject<ErrorViewModel>(getData.ToString());
                 Console.WriteLine($"\nError: {error}");
-                List<object> errList = new List<object>();
+                List<Records> errList = new List<Records>();
                 return errList;
             }
             //throw new NotImplementedException();
@@ -168,7 +168,7 @@ namespace Account_CRUP_App.Controllers
             Console.WriteLine("\nSTRING::" + cont + "::" + idStr);
 
 
-            string response = log.getBoolean(cont, HttpMethod.Patch, idStr);
+            string response = log.getBoolean(cont, HttpMethod.Patch, "/"+id);
             Console.WriteLine("\nResponseCreate::" + response);
             if (response.Contains("\"success\":true"))
             {

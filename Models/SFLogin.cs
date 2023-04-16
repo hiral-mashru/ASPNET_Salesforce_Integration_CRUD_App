@@ -1,17 +1,7 @@
-﻿using System;
-using Account_CRUP_App.Models;
-using System.Collections.Generic;
-using System.Text;
-using System.Net.Http;
+﻿using Account_CRUP_App.Models;
 using System.Net.Http.Headers;
 using System.Net;
 using Newtonsoft.Json;
-using System.Configuration;
-using System.Web.Mvc;
-using Microsoft.AspNetCore.Http;
-using System.Text.Json.Nodes;
-using System.Diagnostics.Metrics;
-using System.Drawing;
 using System.Xml;
 
 namespace Account_CRUD_App.Models 
@@ -108,13 +98,7 @@ namespace Account_CRUD_App.Models
                 request.Headers.Add("X-PreetyPrint", "1");
                 var response = client.SendAsync(request).Result;
                 Console.WriteLine("RESPONSE::"+response);
-                /*if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    return response.Content.ReadAsStringAsync().Result;
-                } else
-                {
-                    return "ERROR:: StatusCode: " + response.StatusCode + " - " + response.Content.ReadAsStringAsync().Result;
-                }*/
+                
                 return response.Content.ReadAsStringAsync().Result;
             }
         }
@@ -217,37 +201,45 @@ namespace Account_CRUD_App.Models
             return true;
         }
 
+        private static void InsertSoapEnvelopeIntoWebRequest(XmlDocument soapEnvelopeXml, HttpWebRequest webRequest)
+        {
+            using (Stream stream = webRequest.GetRequestStream())
+            {
+                soapEnvelopeXml.Save(stream);
+            }
+        }
+
         public bool repriceCart(string id)
         {
             using (var client = new HttpClient())
             {
-                string url = "https://na209.salesforce.com/services/Soap/class/Apttus_CPQApi/CPQWebService";
+                string url = "https://na223.salesforce.com/services/Soap/class/Apttus_CPQApi/CPQWebService";
                 //string action = "https://na209.salesforce.com/services/Soap/class/Apttus_CPQApi/CPQ/FinalizeCartRequestDO";
                 XmlDocument soapEnvelopeDocument = new XmlDocument();
                 soapEnvelopeDocument.LoadXml(
-                @"<soapenv:Envelope
-                    xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""
-                    xmlns:cpq = ""http://soap.sforce.com/schemas/class/Apttus_CPQApi/CPQWebService""
-                    xmlns:cpq1 = ""http://soap.sforce.com/schemas/class/Apttus_CPQApi/CPQ"">
-                    <soapenv:Header>
-                        <cpq:SessionHeader>
-                            <cpq:sessionId>" + AuthToken + "</cpq:sessionId>" +
-                "</cpq:SessionHeader>" +
-                "</soapenv:Header>" +
-                "<soapenv:Body>" +
-                "<cpq:finalizeCart>" +
-                "<cpq:request>" +
-                "<cpq1:CartId>" + id + "</cpq1:CartId>" +
-                "</cpq:request>" +
-                "</cpq:finalizeCart>" +
-                "</soapenv:Body>" +
+                    @"<soapenv:Envelope
+                    xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""
+                    xmlns:cpq=""http://soap.sforce.com/schemas/class/Apttus_CPQApi/CPQWebService""
+                    xmlns:cpq1=""http://soap.sforce.com/schemas/class/Apttus_CPQApi/CPQ"">
+                    <soapenv:Header>
+                        <cpq:SessionHeader>
+                            <cpq:sessionId>"+AuthToken+"</cpq:sessionId>"+
+                        "</cpq:SessionHeader>"+
+                    "</soapenv:Header>"+
+                    "<soapenv:Body>"+
+                        "<cpq:updatePriceForCart>"+
+                            "<cpq:request>"+
+                                "<cpq1:CartId>"+id+"</cpq1:CartId>"+
+                            "</cpq:request>"+
+                        "</cpq:updatePriceForCart>"+
+                    "</soapenv:Body>"+
                 "</soapenv:Envelope>");
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-                webRequest.Headers.Add("SOAPAction", "FinalizeCartRequestDO");
+                webRequest.Headers.Add("SOAPAction", "UpdatePriceRequestDO");
                 webRequest.ContentType = "text/xml;charset=\"utf-8\"";
                 webRequest.Accept = "text/xml";
                 webRequest.Method = "POST";
-                //InsertSoapEnvelopeIntoWebRequest(soapEnvelopeDocument, webRequest);
+                InsertSoapEnvelopeIntoWebRequest(soapEnvelopeDocument, webRequest);
                 //var response = client.SendAsync(webRequest).Result();
                 //IAsyncResult asyncResult = webRequest.BeginGetResponse(null, null);
                 //asyncResult.AsyncWaitHandle.WaitOne();

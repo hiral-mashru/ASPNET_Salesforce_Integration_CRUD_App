@@ -93,7 +93,7 @@
                 var billingCountry = this.elements.billingCountry;
                 alert("ALERT!!!");
                 var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
-                alert("ALERT!!!" + newAcc.Id + "--" + JSON.stringify(newAcc));
+                alert("ALERT!!!" + newAcc.Id+"--"+ id.value + "--" + JSON.stringify(newAcc));
                 $.post("/Home/updateAccount", { input: JSON.stringify(newAcc), id: id.value }, function (data) {
                     console.log("---" + data + "---");
                     alert("DATA-" + data);

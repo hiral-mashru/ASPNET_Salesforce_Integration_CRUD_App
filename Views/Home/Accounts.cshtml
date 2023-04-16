@@ -12,7 +12,6 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
                     </li>
@@ -37,28 +36,18 @@
     }
     else
     {
-        <div class="container">
-            <div id="increment-count">
-                <input type="button" id="up-arrow" value="Next" />
-            </div>
-            <div id="total-count"> </div>
-            <div id="decrement-count">
-                <input type="button" id="down-arrow" value="Previous" />
-            </div>
-        </div>
-        
         <table class="table table-bordered table-responsive table-hover">
-            <tr>
-                <th>Account Name </th>
-                <th>Region </th>
-                <th>Type </th>
-                <th>Customer Rating </th>
-                <th>Update Record</th>
-                <th>Delete Record</th>
-            </tr>
-            @if (TempData.ContainsKey("totalAcc") && TempData["totalAcc"] != "0")
-            {
-                <div id="tBody"></div>
+            <thead>
+                <tr>
+                    <th>Account Name </th>
+                    <th>Region </th>
+                    <th>Type </th>
+                    <th>Customer Rating </th>
+                    <th>Update Record</th>
+                    <th>Delete Record</th>
+                </tr>
+            </thead>
+            <tbody id="tBody">
                 @if (ViewBag.accData != null)
                 {
                     @foreach (var d in (ViewBag.accData))
@@ -73,78 +62,40 @@
                         </tr>
                     }
                 }
-            }
+            </tbody>
         </table>
-        <div>
-            <input type="button" id="previous" onclick="previous()" value="Previous" />
-            <input type="button" id="next" onclick="next()" value="Next" />
-            
-        </div>
+        <div id="accData"></div>
+        <button onclick="previous()">Previous</button>
+        <button onclick="next()">Next</button>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            let pageNum = 1;
+            const pageSize = 10;
+            console.log("In Script::" + pageSize + "::" + pageNum);
+            callAPI();
+            function previous(){
+                pageNum = pageNum - 1;
+                console.log("Previous::" + pageSize + "::" + pageNum);
+                callAPI();
+            }
+            function next(){
+                pageNum = pageNum + 1;
+                console.log("Next::" + pageSize + "::" + pageNum);
+                callAPI();
+            }
+            function callAPI(){
+                console.log("CallAPI::" + pageSize + "::" + pageNum);
+                $.get("/Home/accList", { pageNum: pageNum, pageSize: pageSize }, function (response) {
+                    console.log("DATA::" + response);
+                    var datacontent = ""
+                    for (var i = 0; i < response.length; i++) {
+                        console.log("ID::" + response[i].Id);
+                    }
+                });
+            }
+        </script>
     }
-    <script>
-        var pageNum = 1;
-        const pageSize = 10;
-        var totalPage = '@TempData["totalAcc"]'/pageSize;
-        //var totalPage0 = Math.ceil(totalAcc / pageSize));
-        alert(pageNum + "::" + totalPage);
-        if(pageNum=='1'){
-            alert("1");
-            passCount(pageNum);
-        }
-        function previous(){
-            pageNum = pageNum-1;
-            passCount(pageNum);
-        }
-
-        function next(){
-            pageNum = pageNum + 1;
-            passCount(pageNum);
-        }
-        /*
-        const incrementCount = document.getElementById("increment-count");
-        const decrementCount = document.getElementById("decrement-count");
-
-        // Select total count
-        const totalCount = document.getElementById("total-count");
-        
-        // Variable to track count
-        var pageNum = 1;
-        
-        // Display initial count value
-        totalCount.innerHTML = pageNum;
-        if(pageNum==1){
-            passCount(pageNum);
-        }
-        
-        // Function to increment count
-        const handleIncrement = () => {
-            pageNum++;
-            totalCount.innerHTML = pageNum;
-            passCount(pageNum);
-        };
-
-        // Function to decrement count
-        const handleDecrement = () => {
-            pageNum--;
-            totalCount.innerHTML = pageNum;
-            passCount(pageNum);
-        };
-
-        // Add click event to buttons
-        incrementCount.addEventListener("click", handleIncrement);
-        decrementCount.addEventListener("click", handleDecrement);
-        */
-        function passCount(pageNum) {
-            alert("In PassCount:"+pageNum);
-            $.get("/Home/accList", { pageNum: pageNum, pageSize: pageSize }, function (data) {
-                //document.getElementById("tBody").innerHTML ="<tr><td>hii "+data+"</td></tr>";
-                alert("DATA::"+data);
-                for(d of data){
-                    alert("d::"+d+"::"+d.Id);
-                }
-            });
-        }
-    </script>
+    
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
     </form>
