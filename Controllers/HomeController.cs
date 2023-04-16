@@ -43,7 +43,10 @@ namespace Account_CRUP_App.Controllers
             List<Records> response = new List<Records>();
             response = accCRUD.Read(pageNum, pageSize, fields);
             Console.WriteLine("\nress::" + response.ToString + "--");
-            
+            foreach(var record in response)
+            {
+                Console.WriteLine("")
+            }
             //ViewBag.accData = response;
             return Json(response);
         }
