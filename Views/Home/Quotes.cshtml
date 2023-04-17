@@ -5,6 +5,7 @@
     var UsersData = ViewBag.quotes1;
     //asp-all-route-data
 }
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
@@ -30,31 +31,61 @@
     <h1 class="display-4">Welcome</h1>
     <div><b>Quotes</b><br /></div>
     <table class="table table-bordered table-responsive table-hover">
+        <thead>
         <tr>
             <th>Quote Name </th>
             <th>Proposal Stage</th>
             <th>Proposal Net Amount</th>
         </tr>
-        @if (ViewBag.quotes1 != null)
-        {
-            @foreach (var d in (ViewBag.quotes1))
-            {
-                <tr>
-                    <td><a asp-action="singleQuote" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
-                    <td>@d.Apttus_Proposal__Approval_Stage__c</td>
-                    <td>@d.Apttus_Proposal__Net_Amount__c</td>
-                </tr>
-            }
-        }
+        </thead>
+        <tbody id="tBody"></tbody>
     </table>
-    <input type="button" value="Previous" onclick="PreviosPage()"/>
-    @TempData["PageNumber"]
-    <input type="button" value="Next" onclick="NextPage()" />
+    <button id="Previous" onclick="previous()">Previous</button>
+    <button id="Next" onclick="next()">Next</button>
 
-    <script>
-        function PreviosPage(){
-            var pageNum = '@TempData["PageNumber"]';
-            console.log("PageNumber::"+pageNum);
+    <script type="text/javascript">
+        let pageNum = 1;
+        const pageSize = 10;
+        var totalPage = '@ViewBag.totalAcc' / pageSize;
+        console.log("Total::" + totalPage);
+        if (pageNum == '1') {
+            console.log("1st Page");
+            document.getElementById("Previous").disabled = true;
+        }
+        if (totalPage) {
+
+        }
+        console.log("In Script::" + pageSize + "::" + pageNum);
+        callAPI();
+        function previous() {
+            pageNum = pageNum - 1;
+            console.log("Previous::" + pageSize + "::" + pageNum);
+            callAPI();
+        }
+        function next() {
+            pageNum = pageNum + 1;
+            console.log("Next::" + pageSize + "::" + pageNum);
+            callAPI();
+        }
+        function callAPI() {
+            console.log("CallAPI::" + pageSize + "::" + pageNum);
+            $.get("/Home/quoteList", { pageNum: pageNum, pageSize: pageSize }, function (response) {
+                console.log("DATA::" + JSON.stringify(response));
+                if (response != null) {
+                    $("#tBody").empty();
+                    var datacontent = "";
+                    for (var i = 0; i < response.length; i++) {
+                        console.log("ID::" + response[i].id);
+                        datacontent +=
+                            "<tr><td width='270px'>" +
+                            "<a href='/Home/singleAcc/" + response[i].id + "'>" + response[i].name + "</a></td>" +
+                            "<td width='200px' >" + response[i].apttus_Proposal__Approval_Stage__c + "</td>" +
+                            "<td width='200px' >" + response[i].apttus_Proposal__Presented_Date__c + "</td>" +
+                            "</tr>";
+                    }
+                    $("#tBody").append(datacontent);
+                }
+            });
         }
     </script>
 

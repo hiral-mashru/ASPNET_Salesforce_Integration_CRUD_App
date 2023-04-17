@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
     //asp-all-route-data
 }
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
@@ -34,8 +35,7 @@
     {
         <p>@TempData["errMsg"]</p>
     }
-    else
-    {
+    
         <table class="table table-bordered table-responsive table-hover">
             <thead>
                 <tr>
@@ -47,30 +47,21 @@
                     <th>Delete Record</th>
                 </tr>
             </thead>
-            <tbody id="tBody">
-                @if (ViewBag.accData != null)
-                {
-                    @foreach (var d in (ViewBag.accData))
-                    {
-                        <tr>
-                            <td><a asp-action="singleAcc" asp-controller="Home" asp-route-Id=@d.Id>@d.Name</a></td>
-                            <td>@d.Region__c</td>
-                            <td>@d.Type</td>
-                            <td>@d.Customer_Rating__c</td>
-                            <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="showUpdateAccount" asp-route-Id=@d.Id>Update</a></td>
-                            <td><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="deleteAccount" asp-route-Id=@d.Id>Delete</a></td>
-                        </tr>
-                    }
-                }
-            </tbody>
+            <tbody id="tBody"></tbody>
         </table>
         <div id="accData"></div>
-        <button onclick="previous()">Previous</button>
-        <button onclick="next()">Next</button>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <button id="Previous" onclick="previous()">Previous</button>
+        <button id="Next" onclick="next()">Next</button>
+        
         <script type="text/javascript">
             let pageNum = 1;
             const pageSize = 10;
+            var totalPage = '@ViewBag.totalAcc';
+            console.log("Total::" + totalPage + "<>" + ((pageNum - 1) * pageSize));
+            
+            if(totalPage < ((pageNum-1)*pageSize)){
+                console.log("<><>");
+            }
             console.log("In Script::" + pageSize + "::" + pageNum);
             callAPI();
             function previous(){
@@ -85,16 +76,35 @@
             }
             function callAPI(){
                 console.log("CallAPI::" + pageSize + "::" + pageNum);
+                if (pageNum == '1') {
+                    console.log("1st Page");
+                    document.getElementById("Previous").disabled = true;
+                } else {
+                    document.getElementById("Previous").disabled = false;
+                }
                 $.get("/Home/accList", { pageNum: pageNum, pageSize: pageSize }, function (response) {
-                    console.log("DATA::" + response);
-                    var datacontent = ""
-                    for (var i = 0; i < response.length; i++) {
-                        console.log("ID::" + response[i].Id);
+                    console.log("DATA::" + JSON.stringify(response));
+                    if (response != null) {
+                        $("#tBody").empty();
+                        var datacontent = "";
+                        for (var i = 0; i < response.length; i++) {
+                            console.log("ID::" + response[i].id);
+                            datacontent +=
+                                "<tr><td width='270px'>" +
+                                "<a href='/Home/singleAcc/" + response[i].id + "'>" + response[i].name + "</a></td>" +
+                                "<td width='200px' >" + response[i].region__c + "</td>" +
+                                "<td width='200px' >" + response[i].type + "</td>" +
+                                "<td width='200px' >" + response[i].customer_Rating__c + "</td>" +
+                                "<td width='270px'><a href='/Home/showUpdateAccount/" + response[i].id + "'> Update Account </a></td>" +
+                                "<td width='270px'><a href='/Home/deleteAccount/" + response[i].id + "'> Delete Account </a></td>" +
+                                "</tr>";
+                        }
+                        $("#tBody").append(datacontent);
                     }
                 });
             }
         </script>
-    }
+    
     
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />

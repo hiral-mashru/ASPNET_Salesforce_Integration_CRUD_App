@@ -40,12 +40,11 @@ namespace Account_CRUP_App.Controllers
         public JsonResult accList(int pageNum, int pageSize)
         {
             Console.WriteLine("\n\nPageNum::" + pageNum + "::" + pageSize);
-            List<Records> response = new List<Records>();
-            response = accCRUD.Read(pageNum, pageSize, fields);
+            List<Records> response = accCRUD.Read(pageNum, pageSize, fields);
             Console.WriteLine("\nress::" + response.ToString + "--");
             foreach(var record in response)
             {
-                Console.WriteLine("")
+                Console.WriteLine("Rec::"+record);
             }
             //ViewBag.accData = response;
             return Json(response);
@@ -145,7 +144,6 @@ namespace Account_CRUP_App.Controllers
             Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::"+access_token);
             
             SFLogin log = new SFLogin();
-            int pageNum = 1;
             string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
             Console.WriteLine("\nHomeGETData::" + getData);
             if (!String.IsNullOrEmpty(getData))
@@ -156,22 +154,28 @@ namespace Account_CRUP_App.Controllers
                 if (quoteRecords.records.Count > 0)
                 {
                     ViewBag.aceess_token = access_token;
-                    int numOfRecords = 0;
-                    if (pageNum != 1)
-                    {
-                        numOfRecords = pageNum * 10;
-                    } else
-                    {
-                        numOfRecords = pageNum * 10;
-                    }
-
                     ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
-                    int totalPage = Convert.ToInt32(Math.Ceiling((double)quoteRecords.records.Count() / 10));
-                    ViewBag.TotalQuotes = totalPage;
-                    TempData["PageNumber"] = pageNum;
+                    ViewBag.TotalQuotes = quoteRecords.records.Count;
                 }
             }
             return View("Quotes");
+        }
+
+        public JsonResult quoteList(int pageNum, int pageSize)
+        {
+            Console.WriteLine("\n\nPageNum::" + pageNum + "::" + pageSize);
+            SFLogin log = new SFLogin();
+            string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC limit " + pageSize + " offset " + ((pageNum - 1) * pageSize));
+            Console.WriteLine("\nHomeGETData::" + getData);
+            List<QuoteRecords> response = new List<QuoteRecords>();
+            if (!String.IsNullOrEmpty(getData))
+            {
+                var quoteRecords = JsonConvert.DeserializeObject<QuoteModel>(getData.ToString());
+                Console.WriteLine("\nMODEL:: " + quoteRecords);
+                response = quoteRecords.records.ToList<QuoteRecords>();
+                
+            }
+            return Json(response);
         }
 
         public IActionResult singleQuote(string id)
