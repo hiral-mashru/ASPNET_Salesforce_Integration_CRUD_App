@@ -56,7 +56,7 @@
         <script type="text/javascript">
             let pageNum = 1;
             const pageSize = 10;
-            var totalPage = '@ViewBag.totalAcc';
+            var totalPage = parseFloat('@ViewBag.totalAcc') / parseFloat(pageSize);
             console.log("Total::" + totalPage + "<>" + ((pageNum - 1) * pageSize));
             
             if(totalPage < ((pageNum-1)*pageSize)){
@@ -81,6 +81,12 @@
                     document.getElementById("Previous").disabled = true;
                 } else {
                     document.getElementById("Previous").disabled = false;
+                }
+                if (pageNum == (Math.ceil(parseFloat(totalPage)))) {
+                    console.log("1st Page");
+                    document.getElementById("Next").disabled = true;
+                } else {
+                    document.getElementById("Next").disabled = false;
                 }
                 $.get("/Home/accList", { pageNum: pageNum, pageSize: pageSize }, function (response) {
                     console.log("DATA::" + JSON.stringify(response));

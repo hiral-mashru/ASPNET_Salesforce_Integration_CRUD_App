@@ -25,46 +25,46 @@
 <div class="text-center">
     <form method="post" id="myForm">
         <label for="name"> Name:</label>
-        <input type="text" id="name" name="name" required /><br />
+        <input type="text" id="name" name="name" required /><br /><br />
         
         <label for="region">Region:</label>
         <select name="region" id="region">
             <option value="Americas">Americas</option>
             <option value="EMEA">EMEA</option>
             <option value="APAC">APAC</option>
-        </select><br />
+        </select><br /><br />
         
         <label for="rating">Customer Rating:</label>
         <select name="rating" id="rating">
             <option value="Gold">Gold</option>
             <option value="Silver">Silver</option>
             <option value="Bronze">Bronze</option>
-        </select><br />
+        </select><br /><br />
         
         <label for="type">Type:</label>
         <select name="type" id="type">
             <option value="Analyst">Analyst</option>
             <option value="Competitor">Competitor</option>
             <option value="Customer">Customer</option>
-        </select><br />
+        </select><br /><br />
 
         <label for="Phone"> Phone:</label>
-        <input type="text" id="Phone" name="Phone" /><br />
+        <input type="text" id="Phone" name="Phone" /><br /><br />
 
         <label for="Fax"> Fax:</label>
-        <input type="text" id="Fax" name="Fax" /><br />
+        <input type="text" id="Fax" name="Fax" /><br /><br />
 
         <label for="serialNum"> SLA Serial Number:</label>
-        <input type="text" id="serialNum" name="serialNum" /><br />
+        <input type="text" id="serialNum" name="serialNum" /><br /><br />
 
         <label for="billingCity"> Billing City:</label>
-        <input type="text" id="billingCity" name="billingCity" /><br />
+        <input type="text" id="billingCity" name="billingCity" /><br /><br />
 
         <label for="billingState"> Billing State:</label>
-        <input type="text" id="billingState" name="billingState" /><br />
+        <input type="text" id="billingState" name="billingState" /><br /><br />
 
         <label for="billingCountry"> Billing Country:</label>
-        <input type="text" id="billingCountry" name="billingCountry" /><br />
+        <input type="text" id="billingCountry" name="billingCountry" /><br /><br />
 
         <input type="submit" id="submit" name="submit" value="Submit" />
     </form>
@@ -83,10 +83,11 @@
             var billingCity = this.elements.billingCity;
             var billingState = this.elements.billingState;
             var billingCountry = this.elements.billingCountry;
-            alert("ALERT!!!");
+            //alert("ALERT!!!");
             var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
             alert("ALERT!!!" + newAcc.Name + "--" + JSON.stringify(newAcc));
-            $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function () {
+            $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function (response) {
+                alert("RESPONSE::"+response);
             });
             
         }
