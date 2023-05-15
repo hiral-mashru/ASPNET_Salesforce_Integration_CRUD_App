@@ -116,9 +116,15 @@ namespace Account_CRUD_App.Models
                 request.Content = content;
 
                 var response = client.SendAsync(request).Result;
-                Console.WriteLine("\n\nRESPONSE::" + response.Content.ReadAsStringAsync().Result);
+                Console.WriteLine("\n\nRESPONSE::" + response.Content.ReadAsStringAsync().Result +"::"+response.IsSuccessStatusCode+"::"+response.StatusCode);
                 response.EnsureSuccessStatusCode();
+                
                 string s = response.Content.ReadAsStringAsync().Result;
+                if (urlId != null)
+                {
+                    s = ""+response.IsSuccessStatusCode;
+                }
+                Console.WriteLine("SS:: "+s);
                 return s;
                 
             }

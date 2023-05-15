@@ -115,6 +115,24 @@ namespace Account_CRUP_App.Controllers
             return View("UpdateAccount");
         }
 
+        public JsonResult updateAccount1(string input, string id)
+        {
+            Console.WriteLine("\nUPDATE:: " + id + " :: " + input);
+            string response = accCRUD.Update(id, input);
+            Console.WriteLine("\nAfter Update::" + response);
+            if (response.Length == 18)
+            {
+                TempData["createResponse"] = response;
+                Console.WriteLine("INNNN");
+                //singleAcc(response);
+                return Json(id);
+            }
+            else
+            {
+                return Json("ERROR");
+            }
+        }
+
         public ActionResult updateAccount(string input, string id)
         {
             Console.WriteLine("\nUPDATE:: " + id+" :: "+input);

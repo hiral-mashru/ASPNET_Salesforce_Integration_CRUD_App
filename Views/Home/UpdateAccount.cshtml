@@ -29,6 +29,7 @@
 <div class="text-center">
     
     <div class="text-center">
+        <p id="Status"></p>
         <form method="post" id="myForm">
             <input type="text" id="id" name="id" value="@ViewBag.accDetail.Id" hidden />
             <label for="name"> Name:</label>
@@ -92,9 +93,10 @@
                 //alert("ALERT!!!");
                 var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
                 //alert("ALERT!!!" + newAcc.Id+"--"+ id.value + "--" + JSON.stringify(newAcc));
-                $.post("/Home/updateAccount", { input: JSON.stringify(newAcc), id: id.value }, function (data) {
+                $.post("/Home/updateAccount1", { input: JSON.stringify(newAcc), id: id.value }, function (data) {
                     console.log("---" + data + "---");
                     alert("DATA-" + data);
+                    $("#Status").append("Account is Updated");
                 });
             }
             document.getElementById('myForm').addEventListener('submit', formSubmitHandler);

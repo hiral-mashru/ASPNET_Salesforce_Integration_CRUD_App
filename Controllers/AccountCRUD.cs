@@ -170,6 +170,10 @@ namespace Account_CRUP_App.Controllers
 
             string response = log.getBoolean(cont, HttpMethod.Patch, "/"+id);
             Console.WriteLine("\nResponseCreate::" + response);
+            if(response.Contains("True")) {
+                Console.WriteLine("Response of Update: " + response);
+                return id;
+            }
             if (response.Contains("\"success\":true"))
             {
                 string str = response.Substring(7, 18);
