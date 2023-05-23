@@ -29,6 +29,7 @@
         
         <label for="region">Region:</label>
         <select name="region" id="region">
+            <option value="">---None---</option>
             <option value="Americas">Americas</option>
             <option value="EMEA">EMEA</option>
             <option value="APAC">APAC</option>
@@ -36,6 +37,7 @@
         
         <label for="rating">Customer Rating:</label>
         <select name="rating" id="rating">
+            <option value="">---None---</option>
             <option value="Gold">Gold</option>
             <option value="Silver">Silver</option>
             <option value="Bronze">Bronze</option>
@@ -43,6 +45,7 @@
         
         <label for="type">Type:</label>
         <select name="type" id="type">
+            <option value="">---None---</option>
             <option value="Analyst">Analyst</option>
             <option value="Competitor">Competitor</option>
             <option value="Customer">Customer</option>
@@ -85,7 +88,7 @@
             var billingCountry = this.elements.billingCountry;
             //alert("ALERT!!!");
             var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
-            alert("ALERT!!!" + newAcc.Name + "--" + JSON.stringify(newAcc));
+            //alert("ALERT!!!" + newAcc.Name + "--" + JSON.stringify(newAcc));
             $.post("/Home/createAccount", { input: JSON.stringify(newAcc) }, function (response) {
                 alert("RESPONSE::"+response);
             });

@@ -8,10 +8,10 @@ namespace Account_CRUP_App.Models
     {
         public int? totalSize { get; set; }
         public Boolean? done { get; set; }
-        public List<Records>? records { get; set; }
+        public List<Account>? records { get; set; }
     }
 
-    public class Records
+    public class Account
     {
         public Dictionary<string,string>? attributes { get; set; }
         public string? Id { get; set; }

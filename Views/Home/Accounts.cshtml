@@ -40,9 +40,10 @@
             <thead>
                 <tr>
                     <th>Account Name </th>
-                    <th>Region </th>
+                    <th>SLA Serial Number </th>
+                <!--<th>Region </th>
                     <th>Type </th>
-                    <th>Customer Rating </th>
+                    <th>Customer Rating </th>-->
                     <th>Update Record</th>
                     <th>Delete Record</th>
                 </tr>
@@ -98,9 +99,10 @@
                             datacontent +=
                                 "<tr><td width='270px'>" +
                                 "<a href='/Home/singleAcc/" + response[i].id + "'>" + response[i].name + "</a></td>" +
-                                "<td width='200px' >" + response[i].region__c + "</td>" +
-                                "<td width='200px' >" + response[i].type + "</td>" +
-                                "<td width='200px' >" + response[i].customer_Rating__c + "</td>" +
+                            "<td width='200px' >" + response[i].apttus_Billing__SLASerialNumber__c + "</td>" +
+                            //"<td width='200px' >" + response[i].region__c + "</td>" +
+                                //"<td width='200px' >" + response[i].type + "</td>" +
+                                //"<td width='200px' >" + response[i].customer_Rating__c + "</td>" +
                                 "<td width='270px'><a href='/Home/showUpdateAccount/" + response[i].id + "'> Update Account </a></td>" +
                                 "<td width='270px'><a href='/Home/deleteAccount/" + response[i].id + "'> Delete Account </a></td>" +
                                 "</tr>";
@@ -110,7 +112,6 @@
                 });
             }
         </script>
-    
     
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />

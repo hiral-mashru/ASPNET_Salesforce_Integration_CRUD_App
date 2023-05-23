@@ -87,7 +87,7 @@ namespace Account_CRUD_App.Models
             }
         }
 
-        public string getQuery(string soqlQuery)
+        public string getData(string soqlQuery)
         {
             using(var client = new HttpClient())
             {
@@ -102,7 +102,7 @@ namespace Account_CRUD_App.Models
                 return response.Content.ReadAsStringAsync().Result;
             }
         }
-        public string getBoolean(string soqlQuery, HttpMethod method, string urlId)
+        public string postData(string soqlQuery, HttpMethod method, string urlId)
         {
             using (var client = new HttpClient())
             {

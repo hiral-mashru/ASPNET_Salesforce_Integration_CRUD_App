@@ -23,7 +23,7 @@ namespace Account_CRUP_App.Controllers
         {
             if (access_token != "") {
                 Console.WriteLine("\nIN HOME Controller::");
-                List<Records> response = new List<Records>();
+                List<Account> response = new List<Account>();
                 response = accCRUD.Read(1, 10000, fields);
                 Console.WriteLine("\nress::" + response.ToString() + "--" + response.Count());
                 ViewBag.accData = response;
@@ -40,7 +40,7 @@ namespace Account_CRUP_App.Controllers
         public JsonResult accList(int pageNum, int pageSize)
         {
             Console.WriteLine("\n\nPageNum::" + pageNum + "::" + pageSize);
-            List<Records> response = accCRUD.Read(pageNum, pageSize, fields);
+            List<Account> response = accCRUD.Read(pageNum, pageSize, fields);
             Console.WriteLine("\nress::" + response.ToString + "--");
             foreach(var record in response)
             {
@@ -59,7 +59,7 @@ namespace Account_CRUP_App.Controllers
                     Console.WriteLine("\nAfter Create::" + id);
                 }
                 //AccountCRUD accCRUD = new AccountCRUD();
-                Records response = new Records();
+                Account response = new Account();
                 response = accCRUD.Read(id, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
                 if(response != null)
@@ -104,8 +104,7 @@ namespace Account_CRUP_App.Controllers
 
         public IActionResult showUpdateAccount(string id)
         {
-            Records response = new Records();
-            response = accCRUD.Read(id, fields);
+            Account response = accCRUD.Read(id, fields);
             if (response != null)
             {
                 ViewBag.aceess_token = access_token;
@@ -115,35 +114,52 @@ namespace Account_CRUP_App.Controllers
             return View("UpdateAccount");
         }
 
-        public JsonResult updateAccount1(string input, string id)
+        /*public JsonResult updateAccount1(string input, string id)
         {
             Console.WriteLine("\nUPDATE:: " + id + " :: " + input);
-            string response = accCRUD.Update(id, input);
-            Console.WriteLine("\nAfter Update::" + response);
-            if (response.Length == 18)
+            string res = accCRUD.Update(id, input);
+            Console.WriteLine("\nAfter Update::" + res);
+            if (res.Length == 18)
             {
-                TempData["createResponse"] = response;
+                TempData["createResponse"] = res;
                 Console.WriteLine("INNNN");
                 //singleAcc(response);
-                return Json(id);
+                List<String> response = new List<String>();
+                response.Add(res); 
+                Console.WriteLine("res::"+ response[0]);
+                return Json(response);
             }
             else
             {
                 return Json("ERROR");
             }
-        }
+        }*/
 
-        public ActionResult updateAccount(string input, string id)
+        public ActionResult updateAccount(Account accRecords/*string id, string name, string region, string rating, string type, string Phone, string Fax, string serialNum, string billingCity, string billingState, string billingCountry*/)
         {
-            Console.WriteLine("\nUPDATE:: " + id+" :: "+input);
-            string response = accCRUD.Update(id, input);
+            /*Records accRecords = new Records();
+            accRecords.Id = id;
+            accRecords.Name = name;
+            accRecords.Region__c = region;
+            accRecords.Customer_Rating__c = rating;
+            accRecords.Type = type;
+            accRecords.Phone = Phone;
+            accRecords.Fax = Fax;
+            accRecords.Apttus_Billing__SLASerialNumber__c = serialNum;
+            accRecords.BillingCity = billingCity;
+            accRecords.BillingState = billingState;
+            accRecords.BillingCountry = billingCountry;*/
+
+            //Console.WriteLine("\nUPDATE:: " + id+" :: "+input);
+            string response = accCRUD.Update(accRecords.Id, accRecords);
             Console.WriteLine("\nAfter Update::"+ response);
             if (response.Length == 18)
             {
                 TempData["createResponse"] = response;
                 Console.WriteLine("INNNN");
-                singleAcc(response);
-                return RedirectToAction("singleAcc", "Home", new { id = response });
+                //singleAcc(response);
+                //return RedirectToAction("singleAcc", "Home", new { id = response });
+                return RedirectToAction("getAccount","Home");
             }
             else
             {
@@ -165,7 +181,7 @@ namespace Account_CRUP_App.Controllers
             Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::"+access_token);
             
             SFLogin log = new SFLogin();
-            string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
+            string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
             Console.WriteLine("\nHomeGETData::" + getData);
             if (!String.IsNullOrEmpty(getData))
             {
@@ -186,7 +202,7 @@ namespace Account_CRUP_App.Controllers
         {
             Console.WriteLine("\n\nPageNum::" + pageNum + "::" + pageSize);
             SFLogin log = new SFLogin();
-            string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC limit " + pageSize + " offset " + ((pageNum - 1) * pageSize));
+            string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC limit " + pageSize + " offset " + ((pageNum - 1) * pageSize));
             Console.WriteLine("\nHomeGETData::" + getData);
             List<QuoteRecords> response = new List<QuoteRecords>();
             if (!String.IsNullOrEmpty(getData))
@@ -207,7 +223,7 @@ namespace Account_CRUP_App.Controllers
             Console.WriteLine("\n\n\nAuthToken::"+ access_token +" :: InstanceURL:: "+ instance_url);
             if (access_token != "" && instance_url != "")
             {
-                string getData = log.getQuery("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c, " +
+                string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c, " +
                     "Apttus_Proposal__Presented_Date__c from Apttus_Proposal__Proposal__c where id = '" + id + "'");
                 Console.WriteLine("\nHomeGETData::" + getData);
 
@@ -233,7 +249,7 @@ namespace Account_CRUP_App.Controllers
         {
             SFLogin log = new SFLogin();
             string getCart = "select Id from Apttus_Config2__ProductConfiguration__c where Apttus_QPConfig__Proposald__r.Id='" + id + "' ORDER BY LastModifiedDate DESC limit 1";
-            string gCart = log.getQuery(getCart);
+            string gCart = log.getData(getCart);
             Console.WriteLine("\nGCART:: " + gCart);
             var cart = JsonConvert.DeserializeObject<QuoteModel>(gCart.ToString());
             if (cart.records[0] != null)

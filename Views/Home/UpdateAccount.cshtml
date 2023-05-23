@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Account
+@{
 
     ViewData["Title"] = "Update Account";
 
@@ -30,20 +31,22 @@
     
     <div class="text-center">
         <p id="Status"></p>
-        <form method="post" id="myForm">
-            <input type="text" id="id" name="id" value="@ViewBag.accDetail.Id" hidden />
+        <form method="post" id="myForm1" asp-action="updateAccount" asp-controller="Home">
+            <input type="text" id="id" name="id" asp-for="Id" value="@ViewBag.accDetail.Id" hidden />
             <label for="name"> Name:</label>
-            <input type="text" id="name" name="name" value="@ViewBag.accDetail.Name" required /><br /><br />
-
+            <input type="text" id="name" name="name" asp-for="Name" value="@ViewBag.accDetail.Name" required /><br /><br />
+            
             <label for="region">Region:</label>
-            <select name="region" id="region">
+            <select name="Region__c" id="region">
+                <option value="">---None---</option>
                 <option value="Americas">Americas</option>
                 <option value="EMEA">EMEA</option>
                 <option value="APAC">APAC</option>
             </select><br /><br />
 
             <label for="rating">Customer Rating:</label>
-            <select name="rating" id="rating" >
+            <select name="Customer_Rating__c" id="rating">
+                <option value="">---None---</option>
                 <option value="Gold">Gold</option>
                 <option value="Silver">Silver</option>
                 <option value="Bronze">Bronze</option>
@@ -51,6 +54,7 @@
 
             <label for="type">Type:</label>
             <select name="type" id="type">
+                <option value="">---None---</option>
                 <option value="Analyst">Analyst</option>
                 <option value="Competitor">Competitor</option>
                 <option value="Customer">Customer</option>
@@ -63,7 +67,7 @@
             <input type="text" id="Fax" name="Fax" value="@ViewBag.accDetail.Fax" /><br /><br />
 
             <label for="serialNum"> SLA Serial Number:</label>
-            <input type="text" id="serialNum" name="serialNum" value="@ViewBag.accDetail.Apttus_Billing__SLASerialNumber__c" /><br /><br />
+            <input type="text" id="serialNum" name="Apttus_Billing__SLASerialNumber__c" value="@ViewBag.accDetail.Apttus_Billing__SLASerialNumber__c" /><br /><br />
 
             <label for="billingCity"> Billing City:</label>
             <input type="text" id="billingCity" name="billingCity" value="@ViewBag.accDetail.BillingCity" /><br /><br />
@@ -74,10 +78,11 @@
             <label for="billingCountry"> Billing Country:</label>
             <input type="text" id="billingCountry" name="billingCountry" value="@ViewBag.accDetail.BillingCountry" /><br /><br />
 
-            <input type="submit" id="submit" name="submit" value="Submit" />
+            <input type="submit" id="submit" name="submit" value="Update" />
         </form>
-        <script type="text/javascript">
+        <!--<script type="text/javascript">
 
+            
             function formSubmitHandler(evt) {
                 var id = this.elements.id;
                 var name = this.elements.name;
@@ -93,14 +98,15 @@
                 //alert("ALERT!!!");
                 var newAcc = { "Name": name.value, "Region__c": region.value, "Customer_Rating__c": rating.value, "Type": type.value, "Phone": Phone.value, "Fax": Fax.value, "Apttus_Billing__SLASerialNumber__c": serialNum.value, "BillingCity": billingCity.value, "BillingState": billingState.value, "BillingCountry": billingCountry.value };
                 //alert("ALERT!!!" + newAcc.Id+"--"+ id.value + "--" + JSON.stringify(newAcc));
-                $.post("/Home/updateAccount1", { input: JSON.stringify(newAcc), id: id.value }, function (data) {
-                    console.log("---" + data + "---");
-                    alert("DATA-" + data);
+                $.post("/Home/updateAccount1", { input: JSON.stringify(newAcc), id: id.value }, function (response) {
+                    console.log("---" + JSON.stringify(response) + "---");
+                    alert("DATA-" + response);
                     $("#Status").append("Account is Updated");
                 });
+                location.reload(true);
             }
             document.getElementById('myForm').addEventListener('submit', formSubmitHandler);
-        </script>
+        </script>-->
         <br/>
     <form asp-action="logout" asp-controller="Login" method="post">
         <input type="submit" id="submit" name="submit" value="Logout" />
