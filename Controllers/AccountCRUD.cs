@@ -8,10 +8,16 @@ namespace Account_CRUP_App.Controllers
     public class AccountCRUD : IAccountCRUD
     {
         SFLogin log = new SFLogin();
-        public string Create(object accountData)
+        public string Create(Account acc)
         {
-            Console.WriteLine("\nCreateMethod::" + accountData );
-            var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(accountData.ToString());
+            Console.WriteLine("\nCreateMethod::" + acc );
+            string reqBody = "{\r\n    \"Name\": \"" + acc.Name + "\",\r\n    \"Region__c\":\"" + acc.Region__c + "\",\r\n    " +
+                "\"Customer_Rating__c\":\"" + acc.Customer_Rating__c + "\",\r\n    \"Type\":\"" + acc.Type + "\",\r\n    " +
+                "\"Phone\":\"" + acc.Phone + "\",\r\n    \"Fax\":\"" + acc.Fax + "\",\r\n    \"Apttus_Billing__SLASerialNumber__c\":" +
+                "\"" + acc.Apttus_Billing__SLASerialNumber__c + "\",\r\n    \"BillingCity\":\"" + acc.BillingCity + "\",\r\n    " +
+                "\"BillingState\": \"" + acc.BillingState + "\",\r\n    \"BillingCountry\": \"" + acc.BillingCountry + "\"\r\n}";
+
+            /*var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(accountData.ToString());
             Console.WriteLine($"\n\nTake query: {data}");
             string cont = "{";
             int i = 0;
@@ -26,13 +32,13 @@ namespace Account_CRUP_App.Controllers
                 Console.WriteLine("\ncont++ " + cont);
                 i++;
             }
-            cont = cont + "\r\n}";
-            Console.WriteLine("\nSTRING::" + cont + "::");
+            cont = cont + "\r\n}";*/
+            Console.WriteLine("\nSTRING::" + reqBody + "::");
 
            
-            string response = log.postData(cont, HttpMethod.Post, "");
+            string response = log.postData(reqBody, HttpMethod.Post, "");
             Console.WriteLine("\nResponseCreate::"+response);
-            if (response.Contains("\"success\":true"))
+            if (response.Contains("true"))
             {
                 string str = response.Substring(7, 18);
                 Console.WriteLine("\nstrID in response: " + str);

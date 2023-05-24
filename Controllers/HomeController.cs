@@ -82,22 +82,18 @@ namespace Account_CRUP_App.Controllers
         }
 
         //[HttpPost]
-        public JsonResult createAccount(string input)
+        public ActionResult createAccount(Account accRecord)
         {
             Console.WriteLine("\nINN");
-            //AccountCRUD accCRUD = new AccountCRUD();
-            string response = accCRUD.Create(input);
+            string response = accCRUD.Create(accRecord);
             if (response.Length == 18)
             {
-                //TempData["createResponse"] = response;
                 Console.WriteLine("INNNN "+response);
-                //singleAcc(response);
-                return Json(response);
+                return RedirectToAction("getAccount", "Home");
                 //return RedirectToAction("singleAcc", "Home", new { response });
             } else
             {
-                return Json(null);
-                //return RedirectToAction("createAccount", "Home");
+                return View("CreateAcc");
             }
             
         }
@@ -163,7 +159,7 @@ namespace Account_CRUP_App.Controllers
             }
             else
             {
-                return RedirectToAction("createAccount", "Home");
+                return View("UpdateAccount");
             }
 
         }

@@ -29,7 +29,7 @@
 </header>
 
 <div class="text-center">
-    <p>@TempData["status"]</p>
+    
     <h1 class="display-4">Accounts</h1>
     @if (TempData.ContainsKey("errMsg"))
     {
@@ -55,6 +55,10 @@
         <button id="Next" onclick="next()">Next</button>
         
         <script type="text/javascript">
+        console.log('LOGGG : @TempData["status"]');
+        if ('@TempData["status"]' != ""){
+            alert('@TempData["status"]');
+        }
             let pageNum = 1;
             const pageSize = 10;
             var totalPage = parseFloat('@ViewBag.totalAcc') / parseFloat(pageSize);
@@ -97,7 +101,7 @@
                         for (var i = 0; i < response.length; i++) {
                             console.log("ID::" + response[i].id);
                             datacontent +=
-                                "<tr><td width='270px'>" +
+                            "<tr><td width='270px' scope='row'>" +
                                 "<a href='/Home/singleAcc/" + response[i].id + "'>" + response[i].name + "</a></td>" +
                             "<td width='200px' >" + response[i].apttus_Billing__SLASerialNumber__c + "</td>" +
                             //"<td width='200px' >" + response[i].region__c + "</td>" +

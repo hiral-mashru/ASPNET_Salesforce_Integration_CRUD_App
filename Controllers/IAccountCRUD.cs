@@ -5,7 +5,7 @@ namespace Account_CRUP_App.Controllers
 {
     public interface IAccountCRUD
     {
-        string Create(object accountData);
+        string Create(Account accountData);
         Account Read(string id, List<string> fields);
         List<Account> Read(int pageNumber, int pageSize, List<string> fields);
         string Update(string id, Account accountData);

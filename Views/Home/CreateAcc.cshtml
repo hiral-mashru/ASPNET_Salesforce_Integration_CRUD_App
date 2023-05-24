@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Account
+@{
     ViewData["Title"] = "Create Account";
 }
 <header>
@@ -23,56 +24,79 @@
     </nav>
 </header>
 <div class="text-center">
-    <form method="post" id="myForm">
-        <label for="name"> Name:</label>
-        <input type="text" id="name" name="name" required /><br /><br />
+    <form method="post" id="myForm1" asp-action="createAccount" asp-controller="Home">
+        <table class="table table-bordered table-responsive table-hover">
+            <tbody>
+                <tr>
+                    <td width="50%"><label for="name" class="col-sm-2 col-form-label"> Name</label></td>
+                    <td><input width="500px" type="text" id="name" name="name" asp-for="Name" required /></td>
+                </tr>
+                <tr>
+                    <td><label for="region">Region</label></td>
+                    <td>
+                        <select name="Region__c" id="region">
+                            <option value="">---None---</option>
+                            <option value="Americas">Americas</option>
+                            <option value="EMEA">EMEA</option>
+                            <option value="APAC">APAC</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="rating">Customer Rating</label></td>
+                    <td>
+                        <select name="Customer_Rating__c" id="rating">
+                            <option value="">---None---</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Bronze">Bronze</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="type">Type</label></td>
+                    <td>
+                        <select name="type" id="type">
+                            <option value="">---None---</option>
+                            <option value="Analyst">Analyst</option>
+                            <option value="Competitor">Competitor</option>
+                            <option value="Customer">Customer</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="Phone"> Phone</label></td>
+                    <td><input type="text" id="Phone" name="Phone" /></td>
+                </tr>
+                <tr>
+                    <td><label for="Fax"> Fax</label></td>
+                    <td><input type="text" id="Fax" name="Fax" /></td>
+                </tr>
+                <tr>
+                    <td><label for="serialNum"> SLA Serial Number</label></td>
+                    <td><input type="text" id="serialNum" name="Apttus_Billing__SLASerialNumber__c" /></td>
+                </tr>
+                <tr>
+                    <td><label for="billingCity"> Billing City</label></td>
+                    <td><input type="text" id="billingCity" name="billingCity"/></td>
+                </tr>
+                <tr>
+                    <td><label for="billingState"> Billing State</label></td>
+                    <td><input type="text" id="billingState" name="billingState"/></td>
+                </tr>
+                <tr>
+                    <td><label for="billingCountry"> Billing Country</label></td>
+                    <td><input type="text" id="billingCountry" name="billingCountry"/></td>
+                </tr>
+            </tbody>
+        </table>
         
-        <label for="region">Region:</label>
-        <select name="region" id="region">
-            <option value="">---None---</option>
-            <option value="Americas">Americas</option>
-            <option value="EMEA">EMEA</option>
-            <option value="APAC">APAC</option>
-        </select><br /><br />
-        
-        <label for="rating">Customer Rating:</label>
-        <select name="rating" id="rating">
-            <option value="">---None---</option>
-            <option value="Gold">Gold</option>
-            <option value="Silver">Silver</option>
-            <option value="Bronze">Bronze</option>
-        </select><br /><br />
-        
-        <label for="type">Type:</label>
-        <select name="type" id="type">
-            <option value="">---None---</option>
-            <option value="Analyst">Analyst</option>
-            <option value="Competitor">Competitor</option>
-            <option value="Customer">Customer</option>
-        </select><br /><br />
-
-        <label for="Phone"> Phone:</label>
-        <input type="text" id="Phone" name="Phone" /><br /><br />
-
-        <label for="Fax"> Fax:</label>
-        <input type="text" id="Fax" name="Fax" /><br /><br />
-
-        <label for="serialNum"> SLA Serial Number:</label>
-        <input type="text" id="serialNum" name="serialNum" /><br /><br />
-
-        <label for="billingCity"> Billing City:</label>
-        <input type="text" id="billingCity" name="billingCity" /><br /><br />
-
-        <label for="billingState"> Billing State:</label>
-        <input type="text" id="billingState" name="billingState" /><br /><br />
-
-        <label for="billingCountry"> Billing Country:</label>
-        <input type="text" id="billingCountry" name="billingCountry" /><br /><br />
-
         <input type="submit" id="submit" name="submit" value="Submit" />
     </form>
    
-    
+    <form asp-action="logout" asp-controller="Login" method="post">
+        <input type="submit" id="submit" name="submit" value="Logout" />
+    </form>
     <script type="text/javascript">
 
         function formSubmitHandler(evt) {

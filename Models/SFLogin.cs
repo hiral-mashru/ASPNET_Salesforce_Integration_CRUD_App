@@ -116,11 +116,12 @@ namespace Account_CRUD_App.Models
                 request.Content = content;
 
                 var response = client.SendAsync(request).Result;
-                Console.WriteLine("\n\nRESPONSE::" + response.Content.ReadAsStringAsync().Result +"::"+response.IsSuccessStatusCode+"::"+response.StatusCode);
+                Console.WriteLine("\n\nRESPONSE::" + urlId +"::" + response.Content.ReadAsStringAsync().Result +"::"+response.IsSuccessStatusCode+"::"+response.StatusCode);
                 response.EnsureSuccessStatusCode();
                 
                 string s = response.Content.ReadAsStringAsync().Result;
-                if (urlId != null)
+                Console.WriteLine("\nS:: "+s);
+                if (urlId != "")
                 {
                     s = ""+response.IsSuccessStatusCode;
                 }
