@@ -25,6 +25,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="deleteAccount" asp-route-Id=@ViewBag.accDetail.Id>Delete Account</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -39,20 +42,12 @@
         <div class="text-center">
             <table class="table table-bordered table-responsive table-hover">
                 <tr>
-                    <td>Name</td>
+                    <td width="50%">Name</td>
                     <td>@ViewBag.accDetail.Name</td>
                 </tr>
                 <tr>
-                    <td>Region</td>
-                    <td>@ViewBag.accDetail.Region__c</td>
-                </tr>
-                <tr>
-                    <td>Type</td>
-                    <td>@ViewBag.accDetail.Type</td>
-                </tr>
-                <tr>
-                    <td>Customer Rating</td>
-                    <td>@ViewBag.accDetail.Customer_Rating__c</td>
+                    <td>Employees</td>
+                    <td>@ViewBag.accDetail.NumberOfEmployees</td>
                 </tr>
                 <tr>
                     <td>Phone</td>
@@ -78,10 +73,16 @@
                     <td>Billing Country</td>
                     <td>@ViewBag.accDetail.BillingCountry</td>
                 </tr>
+                <tr>
+                    <td>Shipping State</td>
+                    <td>@ViewBag.accDetail.ShippingState</td>
+                </tr>
+                <tr>
+                    <td>Shipping Country</td>
+                    <td>@ViewBag.accDetail.ShippingCountry</td>
+                </tr>
             </table>
         </div>
     }
-    <form asp-action="logout" asp-controller="Login" method="post">
-        <input type="submit" id="submit" name="submit" value="Logout" />
-    </form>
+    
 </div>

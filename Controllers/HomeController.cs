@@ -9,7 +9,7 @@ namespace Account_CRUP_App.Controllers
     public class HomeController : Controller
     {
         AccountCRUD accCRUD = new AccountCRUD();
-        List<string> fields = new List<string>() { "Id", "Name", "Region__c", "Type", "Customer_Rating__c", "Phone", "Fax", "Apttus_Billing__SLASerialNumber__c", "BillingCity", "BillingState", "BillingCountry" };
+        List<string> fields = new List<string>() { "Id", "Name", "NumberOfEmployees", "ShippingState", "ShippingCountry", "Phone", "Fax", "Apttus_Billing__SLASerialNumber__c", "BillingCity", "BillingState", "BillingCountry" };
 
         private readonly ILogger<HomeController> _logger;
         public static string access_token;
@@ -58,9 +58,7 @@ namespace Account_CRUP_App.Controllers
                 {
                     Console.WriteLine("\nAfter Create::" + id);
                 }
-                //AccountCRUD accCRUD = new AccountCRUD();
-                Account response = new Account();
-                response = accCRUD.Read(id, fields);
+                Account response = accCRUD.Read(id, fields);
                 Console.WriteLine("\nress::" + response.ToString + "--");
                 if(response != null)
                 {
@@ -70,7 +68,7 @@ namespace Account_CRUP_App.Controllers
             }
             else
             {
-                TempData["errMsg"] = "Access Token is missing...";
+                TempData["errMsg"] = "You are Logged out...";
             }
             return View("AccDetails");
         }
@@ -131,7 +129,7 @@ namespace Account_CRUP_App.Controllers
             }
         }*/
 
-        public ActionResult updateAccount(Account accRecords/*string id, string name, string region, string rating, string type, string Phone, string Fax, string serialNum, string billingCity, string billingState, string billingCountry*/)
+        public ActionResult updateAccount(Account accRecords)
         {
             /*Records accRecords = new Records();
             accRecords.Id = id;

@@ -16,14 +16,17 @@ namespace Account_CRUP_App.Models
         public Dictionary<string,string>? attributes { get; set; }
         public string? Id { get; set; }
         public string? Name { get; set; }
-        public string? Region__c { get; set; }
-        public string? Type { get; set; }
-        public string? Customer_Rating__c { get; set; }
+      //pblic string? Region__c { get; set; }
+        public int ? NumberOfEmployees { get; set; }
+     //public string? Type { get; set; }
+     //public string? Customer_Rating__c { get; set; }
         public string? Phone { get; set; }
         public string? Fax { get; set; }
         public string? Apttus_Billing__SLASerialNumber__c { get; set; }
         public string? BillingCity { get; set; }
         public string? BillingState { get; set; }
         public string? BillingCountry { get; set; }
+        public string? ShippingState { get; set; }
+        public string? ShippingCountry { get; set; }
     }
 }

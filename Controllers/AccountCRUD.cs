@@ -11,8 +11,8 @@ namespace Account_CRUP_App.Controllers
         public string Create(Account acc)
         {
             Console.WriteLine("\nCreateMethod::" + acc );
-            string reqBody = "{\r\n    \"Name\": \"" + acc.Name + "\",\r\n    \"Region__c\":\"" + acc.Region__c + "\",\r\n    " +
-                "\"Customer_Rating__c\":\"" + acc.Customer_Rating__c + "\",\r\n    \"Type\":\"" + acc.Type + "\",\r\n    " +
+            string reqBody = "{\r\n    \"Name\": \"" + acc.Name + "\",\r\n    \"NumberOfEmployees\":\"" + acc.NumberOfEmployees + "\",\r\n    " +
+                "\"ShippingState\":\"" + acc.ShippingState + "\",\r\n    \"ShippingCountry\":\"" + acc.ShippingCountry + "\",\r\n    " +
                 "\"Phone\":\"" + acc.Phone + "\",\r\n    \"Fax\":\"" + acc.Fax + "\",\r\n    \"Apttus_Billing__SLASerialNumber__c\":" +
                 "\"" + acc.Apttus_Billing__SLASerialNumber__c + "\",\r\n    \"BillingCity\":\"" + acc.BillingCity + "\",\r\n    " +
                 "\"BillingState\": \"" + acc.BillingState + "\",\r\n    \"BillingCountry\": \"" + acc.BillingCountry + "\"\r\n}";
@@ -149,8 +149,8 @@ namespace Account_CRUP_App.Controllers
         {
             Console.WriteLine("\nUpdateMethod::" + acc.ToString());
 
-            string reqBody = "{\r\n    \"Name\": \""+acc.Name + "\",\r\n    \"Region__c\":\""+acc.Region__c+ "\",\r\n    " +
-                "\"Customer_Rating__c\":\""+acc.Customer_Rating__c+ "\",\r\n    \"Type\":\""+acc.Type+ "\",\r\n    " +
+            string reqBody = "{\r\n    \"Name\": \""+acc.Name + "\",\r\n    \"NumberOfEmployees\":\"" + acc.NumberOfEmployees + "\",\r\n    " +
+                "\"ShippingState\":\"" + acc.ShippingState + "\",\r\n    \"ShippingCountry\":\"" + acc.ShippingCountry + "\",\r\n    " +
                 "\"Phone\":\""+acc.Phone+ "\",\r\n    \"Fax\":\""+acc.Fax+ "\",\r\n    \"Apttus_Billing__SLASerialNumber__c\":" +
                 "\""+acc.Apttus_Billing__SLASerialNumber__c+ "\",\r\n    \"BillingCity\":\""+acc.BillingCity+ "\",\r\n    " +
                 "\"BillingState\": \""+acc.BillingState+ "\",\r\n    \"BillingCountry\": \""+acc.BillingCountry+ "\"\r\n}";

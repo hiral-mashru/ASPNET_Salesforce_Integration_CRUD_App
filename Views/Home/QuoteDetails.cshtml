@@ -13,13 +13,15 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
-                        </li>
-                    
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -27,27 +29,42 @@
 </header>
 <h1>@ViewData["Title"]</h1>
 <div class="text-center">
-<div><b>Quote Details</b><br /></div>
-
+    <br/>
     @if (ViewBag.quoteDetail != null)
     {
         <div class="text-center">
-            <p>Id : @ViewBag.quoteDetail.Id</p>
-            <p>Name : @ViewBag.quoteDetail.Name</p>
-            <p>Approval Stage : @ViewBag.quoteDetail.Apttus_Proposal__Approval_Stage__c</p>
-            <p>Net Amount : @ViewBag.quoteDetail.Apttus_Proposal__Net_Amount__c</p>
-            <p>Presented Date : @ViewBag.quoteDetail.Apttus_Proposal__Presented_Date__c</p>
+            <table class="table table-bordered table-responsive table-hover">
+                <tr>
+                    <td width="50%">Id</td>
+                    <td>@ViewBag.quoteDetail.Id</td>
+                </tr>
+                <tr>
+                    <td width="50%">Name</td>
+                    <td>@ViewBag.quoteDetail.Name</td>
+                </tr>
+                <tr>
+                    <td width="50%">Approval Stage</td>
+                    <td>@ViewBag.quoteDetail.Apttus_Proposal__Approval_Stage__c</td>
+                </tr>
+                <tr>
+                    <td width="50%">Net Amount</td>
+                    <td>@ViewBag.quoteDetail.Apttus_Proposal__Net_Amount__c</td>
+                </tr>
+                <tr>
+                    <td width="50%">Presented Date</td>
+                    <td>@ViewBag.quoteDetail.Apttus_Proposal__Presented_Date__c</td>
+                </tr>
+            </table>
             <form asp-action="reprice" asp-controller="Home" asp-route-id=@ViewBag.quoteDetail.Id>
-                <input type="submit" value="Reprice"/>
+                <input type="submit" value="Reprice" />
             </form>
         </div>
+        
     }
     <script>
         if ('@TempData["reprised"]' == 'The Cart is Reprised.') {
             alert("The Cart is Reprised.");
         }
     </script>
-<form asp-action="logout" asp-controller="Login" method="post">
-    <input type="submit" id="submit" name="submit" value="Logout" />
-</form>
+
 </div>

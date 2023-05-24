@@ -16,12 +16,15 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Quotes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -95,8 +98,4 @@
         }
     </script>
 
-    
-    <form asp-action="logout" asp-controller="Login" method="post">
-        <input type="submit" id="submit" name="submit" value="Logout" />
-    </form>
 </div>

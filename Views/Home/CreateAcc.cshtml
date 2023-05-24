@@ -18,6 +18,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="getAccount">Accounts</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -32,37 +35,8 @@
                     <td><input width="500px" type="text" id="name" name="name" asp-for="Name" required /></td>
                 </tr>
                 <tr>
-                    <td><label for="region">Region</label></td>
-                    <td>
-                        <select name="Region__c" id="region">
-                            <option value="">---None---</option>
-                            <option value="Americas">Americas</option>
-                            <option value="EMEA">EMEA</option>
-                            <option value="APAC">APAC</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="rating">Customer Rating</label></td>
-                    <td>
-                        <select name="Customer_Rating__c" id="rating">
-                            <option value="">---None---</option>
-                            <option value="Gold">Gold</option>
-                            <option value="Silver">Silver</option>
-                            <option value="Bronze">Bronze</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="type">Type</label></td>
-                    <td>
-                        <select name="type" id="type">
-                            <option value="">---None---</option>
-                            <option value="Analyst">Analyst</option>
-                            <option value="Competitor">Competitor</option>
-                            <option value="Customer">Customer</option>
-                        </select>
-                    </td>
+                    <td><label for="NumberOfEmployees"> Employees </label></td>
+                    <td><input type="number" id="NumberOfEmployees" name="NumberOfEmployees" /></td>
                 </tr>
                 <tr>
                     <td><label for="Phone"> Phone</label></td>
@@ -88,15 +62,21 @@
                     <td><label for="billingCountry"> Billing Country</label></td>
                     <td><input type="text" id="billingCountry" name="billingCountry"/></td>
                 </tr>
+                <tr>
+                    <td><label for="ShippingState"> Shipping State</label></td>
+                    <td><input type="text" id="ShippingState" name="ShippingState" /></td>
+                </tr>
+                <tr>
+                    <td><label for="ShippingCountry"> Shipping Country</label></td>
+                    <td><input type="text" id="ShippingCountry" name="ShippingCountry" /></td>
+                </tr>
             </tbody>
         </table>
         
         <input type="submit" id="submit" name="submit" value="Submit" />
     </form>
    
-    <form asp-action="logout" asp-controller="Login" method="post">
-        <input type="submit" id="submit" name="submit" value="Logout" />
-    </form>
+    
     <script type="text/javascript">
 
         function formSubmitHandler(evt) {
