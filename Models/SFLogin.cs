@@ -251,18 +251,26 @@ namespace Account_CRUD_App.Models
                 //IAsyncResult asyncResult = webRequest.BeginGetResponse(null, null);
                 //asyncResult.AsyncWaitHandle.WaitOne();
                 string soapResult;
-                using (WebResponse webResponse = webRequest.GetResponse())
+                try
                 {
-                    using (StreamReader rd = new StreamReader(webResponse.GetResponseStream()))
+                    using (WebResponse webResponse = webRequest.GetResponse())
                     {
-                        soapResult = rd.ReadToEnd();
+                        using (StreamReader rd = new StreamReader(webResponse.GetResponseStream()))
+                        {
+                            soapResult = rd.ReadToEnd();
+                        }
+                        Console.Write(webResponse);
+                        if (soapResult != null)
+                        {
+                            return true;
+                        }
                     }
-                    Console.Write(webResponse);
-                }
-                if (soapResult != null)
+                } catch(Exception ex)
                 {
-                    return true;
+                    Console.WriteLine("Exception:: "+ex.ToString());
                 }
+                
+                
             }
             return false;
         }
