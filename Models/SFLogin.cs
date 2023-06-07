@@ -45,8 +45,13 @@ namespace Account_CRUD_App.Models
             Console.WriteLine(response.Content.ReadAsStringAsync().Result);
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
-            AuthToken = values["access_token"];
-            InstanceUrl = values["instance_url"];
+            if (values.ContainsKey("access_token"))
+            {
+                AuthToken = values["access_token"];
+                InstanceUrl = values["instance_url"];
+                return values;
+            }
+            
             //return response.Content.ReadAsStringAsync().Result;
             return values;
         }

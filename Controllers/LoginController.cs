@@ -39,6 +39,7 @@ namespace Account_CRUD_App.Controllers
             };
         }
         */
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult login1(String username, String password)
@@ -55,7 +56,7 @@ namespace Account_CRUD_App.Controllers
             {
                 HomeController.access_token = response["access_token"];
                 HomeController.instance_url = response["instance_url"];
-                //Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                /*//Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 //config.AppSettings.Settings["access_token"].Value = response["access_token"];
                 //config.AppSettings.Settings["instance_url"].Value = response["instance_url"];
                 //config.Save(ConfigurationSaveMode.Modified);
