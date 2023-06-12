@@ -30,14 +30,14 @@ namespace Account_CRUD_App.Models
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "https://login.salesforce.com/services/oauth2/token");
-            request.Headers.Add("Authorization", "Bearer TsLxmAO9tvcTH3ciba3RdbeQP");
+            request.Headers.Add("Authorization", "Bearer iFGgGoyfqUlXW14GgdX72Qu9");
             request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:0; LSKey-c$CookieConsentPolicy=0:0");
             var collection = new List<KeyValuePair<string, string>>();
             collection.Add(new("grant_type", "password"));
-            collection.Add(new("client_id", "3MVG9X12xD2kqQman8DJNEQSNqWZdTBzGEKwyYb5lNKwbWVtHUr..uzzp4VaGbafy.A8sf6EccWzgyAqQkjTg"));
-            collection.Add(new("client_secret", "D713EBE1FD515A283FE3E87E553B9A6148B4AF3A0DC111163283A956B93564E4"));
+            collection.Add(new("client_id", "3MVG9ux34Ig8G5epc55ASCGyqz3.bcCMC.kRhrV48sZQgo5KoAB43ntMPss2JBccc9l0aFczH9_pBg2AZudTn"));
+            collection.Add(new("client_secret", "60BA762728B3DDC661A41E09562899E9E036C70C7BB5C40E9E0F4CD84E9476B8"));
             collection.Add(new("username", username));
-            collection.Add(new("password", password+"TsLxmAO9tvcTH3ciba3RdbeQP"));
+            collection.Add(new("password", password+ "iFGgGoyfqUlXW14GgdX72Qu9"));
             var content = new FormUrlEncodedContent(collection);
             request.Content = content;
             var response = client.SendAsync(request).Result;
@@ -252,9 +252,9 @@ namespace Account_CRUD_App.Models
                 webRequest.Accept = "text/xml";
                 webRequest.Method = "POST";
                 InsertSoapEnvelopeIntoWebRequest(soapEnvelopeDocument, webRequest);
-                //var response = client.SendAsync(webRequest).Result();
+                /*var response = client.SendAsync(webRequest).Result();
                 //IAsyncResult asyncResult = webRequest.BeginGetResponse(null, null);
-                //asyncResult.AsyncWaitHandle.WaitOne();
+                //asyncResult.AsyncWaitHandle.WaitOne();*/
                 string soapResult;
                 try
                 {

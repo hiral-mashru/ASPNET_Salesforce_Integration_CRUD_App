@@ -19,10 +19,11 @@ namespace Account_CRUP_App.Controllers
             _logger = logger;
         }
 
+
         public IActionResult getAccount()
         {
             if (access_token != "") {
-                Console.WriteLine("\nIN HOME Controller::");
+                Console.WriteLine("\nIN HOME Controller:: ");
                 List<Account> response = new List<Account>();
                 response = accCRUD.Read(1, 10000, fields);
                 Console.WriteLine("\nress::" + response.ToString() + "--" + response.Count());
@@ -31,7 +32,8 @@ namespace Account_CRUP_App.Controllers
                 ViewBag.totalAcc = response.Count();
             } else
             {
-                TempData["errMsg"] = "Access Token is missing...";
+                //TempData["errMsg"] = "Access Token is missing...";
+                return View("Login");
             }
             
             return View("Accounts");
@@ -68,7 +70,8 @@ namespace Account_CRUP_App.Controllers
             }
             else
             {
-                TempData["errMsg"] = "You are Logged out...";
+                //TempData["errMsg"] = "You are Logged out...";
+                return View("Login");
             }
             return View("AccDetails");
         }
@@ -76,36 +79,53 @@ namespace Account_CRUP_App.Controllers
         //[Route("Home/createAccount")]
         public IActionResult showCreateAcc()
         {
-            return View("CreateAcc");
+            if (access_token != "")
+            {
+                return View("CreateAcc");
+            } else
+            {
+                return View("Login");
+            }
         }
 
         //[HttpPost]
         public ActionResult createAccount(Account accRecord)
         {
-            Console.WriteLine("\nINN");
-            string response = accCRUD.Create(accRecord);
-            if (response.Length == 18)
+            if (access_token != "")
             {
-                Console.WriteLine("INNNN "+response);
-                return RedirectToAction("getAccount", "Home");
-                //return RedirectToAction("singleAcc", "Home", new { response });
+                Console.WriteLine("\nINN");
+                string response = accCRUD.Create(accRecord);
+                if (response.Length == 18)
+                {
+                    Console.WriteLine("INNNN " + response);
+                    return RedirectToAction("getAccount", "Home");
+                    //return RedirectToAction("singleAcc", "Home", new { response });
+                }
+                else
+                {
+                    return View("CreateAcc");
+                }
             } else
             {
-                return View("CreateAcc");
+                return View("Login");
             }
-            
         }
 
         public IActionResult showUpdateAccount(string id)
         {
-            Account response = accCRUD.Read(id, fields);
-            if (response != null)
+            if (access_token != "") { 
+                Account response = accCRUD.Read(id, fields);
+                if (response != null)
+                {
+                    ViewBag.aceess_token = access_token;
+                    ViewBag.accDetail = response;
+                }
+
+                return View("UpdateAccount");
+            } else
             {
-                ViewBag.aceess_token = access_token;
-                ViewBag.accDetail = response;
+                return View("Login");
             }
-            
-            return View("UpdateAccount");
         }
 
         /*public JsonResult updateAccount1(string input, string id)
@@ -145,21 +165,26 @@ namespace Account_CRUP_App.Controllers
             accRecords.BillingCountry = billingCountry;*/
 
             //Console.WriteLine("\nUPDATE:: " + id+" :: "+input);
-            string response = accCRUD.Update(accRecords.Id, accRecords);
-            Console.WriteLine("\nAfter Update::"+ response);
-            if (response.Length == 18)
+            if (access_token != "")
             {
-                TempData["createResponse"] = response;
-                Console.WriteLine("INNNN");
-                //singleAcc(response);
-                //return RedirectToAction("singleAcc", "Home", new { id = response });
-                return RedirectToAction("getAccount","Home");
-            }
-            else
+                string response = accCRUD.Update(accRecords.Id, accRecords);
+                Console.WriteLine("\nAfter Update::" + response);
+                if (response.Length == 18)
+                {
+                    TempData["createResponse"] = response;
+                    Console.WriteLine("INNNN");
+                    //singleAcc(response);
+                    //return RedirectToAction("singleAcc", "Home", new { id = response });
+                    return RedirectToAction("getAccount", "Home");
+                }
+                else
+                {
+                    return View("UpdateAccount");
+                }
+            } else
             {
-                return View("UpdateAccount");
+                return View("Login");
             }
-
         }
         public ActionResult deleteAccount(string id)
         {
@@ -172,24 +197,30 @@ namespace Account_CRUP_App.Controllers
         }
         public IActionResult Index()
         {
-            Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::"+access_token);
-            
-            SFLogin log = new SFLogin();
-            string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
-            Console.WriteLine("\nHomeGETData::" + getData);
-            if (!String.IsNullOrEmpty(getData))
+            if (access_token != "")
             {
-                var quoteRecords = JsonConvert.DeserializeObject<QuoteModel>(getData.ToString());
-                
-                Console.WriteLine("\nMODEL:: " + quoteRecords);
-                if (quoteRecords.records.Count > 0)
+                Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::" + access_token);
+
+                SFLogin log = new SFLogin();
+                string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
+                Console.WriteLine("\nHomeGETData::" + getData);
+                if (!String.IsNullOrEmpty(getData))
                 {
-                    ViewBag.aceess_token = access_token;
-                    ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
-                    ViewBag.TotalQuotes = quoteRecords.records.Count;
+                    var quoteRecords = JsonConvert.DeserializeObject<QuoteModel>(getData.ToString());
+
+                    Console.WriteLine("\nMODEL:: " + quoteRecords);
+                    if (quoteRecords.records.Count > 0)
+                    {
+                        ViewBag.aceess_token = access_token;
+                        ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
+                        ViewBag.TotalQuotes = quoteRecords.records.Count;
+                    }
                 }
+                return View("Quotes");
+            } else
+            {
+                return View("Login");
             }
-            return View("Quotes");
         }
 
         public JsonResult quoteList(int pageNum, int pageSize)
@@ -211,32 +242,38 @@ namespace Account_CRUP_App.Controllers
 
         public IActionResult singleQuote(string id)
         {
-            Console.WriteLine("\n\nSing Quote ID:: " + id);
-            //Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            SFLogin log = new SFLogin();
-            Console.WriteLine("\n\n\nAuthToken::"+ access_token +" :: InstanceURL:: "+ instance_url);
-            if (access_token != "" && instance_url != "")
+            if (access_token != "")
             {
-                string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c, " +
-                    "Apttus_Proposal__Presented_Date__c from Apttus_Proposal__Proposal__c where id = '" + id + "'");
-                Console.WriteLine("\nHomeGETData::" + getData);
-
-                if (!String.IsNullOrEmpty(getData))
+                Console.WriteLine("\n\nSing Quote ID:: " + id);
+                //Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                SFLogin log = new SFLogin();
+                Console.WriteLine("\n\n\nAuthToken::" + access_token + " :: InstanceURL:: " + instance_url);
+                if (access_token != "" && instance_url != "")
                 {
-                    var quoteRecords = JsonConvert.DeserializeObject<QuoteModel>(getData.ToString());
-                    Console.WriteLine("\nMODEL:: " + quoteRecords.records[0].Name);
-                    if (quoteRecords.records.Count > 0)
+                    string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c, " +
+                        "Apttus_Proposal__Presented_Date__c from Apttus_Proposal__Proposal__c where id = '" + id + "'");
+                    Console.WriteLine("\nHomeGETData::" + getData);
+
+                    if (!String.IsNullOrEmpty(getData))
                     {
-                        if (TempData.ContainsKey("isReprised"))
+                        var quoteRecords = JsonConvert.DeserializeObject<QuoteModel>(getData.ToString());
+                        Console.WriteLine("\nMODEL:: " + quoteRecords.records[0].Name);
+                        if (quoteRecords.records.Count > 0)
                         {
-                            TempData["reprised"] = "The Cart is Reprised.";
+                            if (TempData.ContainsKey("isReprised"))
+                            {
+                                TempData["reprised"] = "The Cart is Reprised.";
+                            }
+                            ViewBag.aceess_token = access_token;
+                            ViewBag.quoteDetail = quoteRecords.records[0];
                         }
-                        ViewBag.aceess_token = access_token;
-                        ViewBag.quoteDetail = quoteRecords.records[0];
                     }
                 }
+                return View("QuoteDetails");
+            } else
+            {
+                return View("Login");
             }
-            return View("QuoteDetails");
         }
 
         public ActionResult reprice(string id)

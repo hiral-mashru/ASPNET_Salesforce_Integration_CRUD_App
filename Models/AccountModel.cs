@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+﻿/*using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Newtonsoft.Json.Linq;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;*/
 
 namespace Account_CRUP_App.Models
 {
@@ -16,10 +16,10 @@ namespace Account_CRUP_App.Models
         public Dictionary<string,string>? attributes { get; set; }
         public string? Id { get; set; }
         public string? Name { get; set; }
-      //pblic string? Region__c { get; set; }
+      //public string? Region__c { get; set; }
         public int ? NumberOfEmployees { get; set; }
-     //public string? Type { get; set; }
-     //public string? Customer_Rating__c { get; set; }
+     /*public string? Type { get; set; }
+     //public string? Customer_Rating__c { get; set; }*/
         public string? Phone { get; set; }
         public string? Fax { get; set; }
         public string? Apttus_Billing__SLASerialNumber__c { get; set; }

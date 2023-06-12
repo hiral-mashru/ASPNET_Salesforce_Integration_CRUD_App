@@ -1,14 +1,13 @@
 ﻿using Account_CRUD_App.Models;
 using Account_CRUP_App.Controllers;
-using Account_CRUP_App.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+/*using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Immutable;
 using System.Configuration;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Http;*/
 
 namespace Account_CRUD_App.Controllers
 {

@@ -1,6 +1,5 @@
 ﻿using Account_CRUD_App.Models;
 using Account_CRUP_App.Models;
-using Account_CRUP_App.Models;
 using Newtonsoft.Json;
 
 namespace Account_CRUP_App.Controllers
@@ -47,7 +46,6 @@ namespace Account_CRUP_App.Controllers
             {
                 return response;
             }
-            //return "";
             //throw new NotImplementedException();
         }
 
@@ -95,10 +93,10 @@ namespace Account_CRUP_App.Controllers
             }
             else
             {
-                string data = getData.Substring(1, getData.Length - 2);
+                /*string data = getData.Substring(1, getData.Length - 2);
                 Console.WriteLine("\nSubstring:" + data);
                 //var error = JsonConvert.DeserializeObject<ErrorViewModel>(data.ToString());
-                //Console.WriteLine($"\nError: {error}");
+                //Console.WriteLine($"\nError: {error}");*/
                 return null;
             }
             //throw new NotImplementedException();
