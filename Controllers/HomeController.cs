@@ -13,7 +13,10 @@ namespace Account_CRUP_App.Controllers
 
         private readonly ILogger<HomeController> _logger;
         public static string access_token;
-        public static string instance_url;
+        private static string instance_url;
+
+        public static string Instance_url { get => instance_url; set => instance_url = value; }
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -199,7 +202,7 @@ namespace Account_CRUP_App.Controllers
         {
             if (access_token != "")
             {
-                Console.WriteLine("\nIN HOME Controller\n" + instance_url + ":::" + access_token);
+                Console.WriteLine("\nIN HOME Controller\n" + Instance_url + ":::" + access_token);
 
                 SFLogin log = new SFLogin();
                 string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
@@ -211,7 +214,7 @@ namespace Account_CRUP_App.Controllers
                     Console.WriteLine("\nMODEL:: " + quoteRecords);
                     if (quoteRecords.records.Count > 0)
                     {
-                        ViewBag.aceess_token = access_token;
+                        //ViewBag.aceess_token = access_token;
                         ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
                         ViewBag.TotalQuotes = quoteRecords.records.Count;
                     }
@@ -247,8 +250,8 @@ namespace Account_CRUP_App.Controllers
                 Console.WriteLine("\n\nSing Quote ID:: " + id);
                 //Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 SFLogin log = new SFLogin();
-                Console.WriteLine("\n\n\nAuthToken::" + access_token + " :: InstanceURL:: " + instance_url);
-                if (access_token != "" && instance_url != "")
+                Console.WriteLine("\n\n\nAuthToken::" + access_token + " :: InstanceURL:: " + Instance_url);
+                if (access_token != "" && Instance_url != "")
                 {
                     string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c, " +
                         "Apttus_Proposal__Presented_Date__c from Apttus_Proposal__Proposal__c where id = '" + id + "'");
@@ -263,6 +266,7 @@ namespace Account_CRUP_App.Controllers
                             if (TempData.ContainsKey("isReprised"))
                             {
                                 TempData["reprised"] = "The Cart is Reprised.";
+                                TempData.Remove("isReprised");
                             }
                             ViewBag.aceess_token = access_token;
                             ViewBag.quoteDetail = quoteRecords.records[0];

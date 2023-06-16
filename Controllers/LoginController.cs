@@ -46,7 +46,7 @@ namespace Account_CRUD_App.Controllers
             SFLogin log = new SFLogin();
             Dictionary<string, string> response = log.authLogin(username, password);
             Console.WriteLine("\n\n\nNEWW:: "+response);
-            if (response.ContainsKey("error"))
+            if (response.ContainsKey("error")) //////////////////////
             {
                 String loginError = "Please provide valid Username or Password";
                 return BadRequest(new { Message = loginError });
@@ -54,7 +54,7 @@ namespace Account_CRUD_App.Controllers
             else
             {
                 HomeController.access_token = response["access_token"];
-                HomeController.instance_url = response["instance_url"];
+                HomeController.Instance_url = response["instance_url"];
                 /*//Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 //config.AppSettings.Settings["access_token"].Value = response["access_token"];
                 //config.AppSettings.Settings["instance_url"].Value = response["instance_url"];
@@ -113,7 +113,7 @@ namespace Account_CRUD_App.Controllers
             try
             {
                 HomeController.access_token = "";
-                HomeController.instance_url = "";
+                HomeController.Instance_url = "";
                 /*Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.Settings["username"].Value = "";
                 config.AppSettings.Settings["password"].Value = "";

@@ -14,7 +14,7 @@ namespace Account_CRUP_App.Controllers
                 "\"ShippingState\":\"" + acc.ShippingState + "\",\r\n    \"ShippingCountry\":\"" + acc.ShippingCountry + "\",\r\n    " +
                 "\"Phone\":\"" + acc.Phone + "\",\r\n    \"Fax\":\"" + acc.Fax + "\",\r\n    \"Apttus_Billing__SLASerialNumber__c\":" +
                 "\"" + acc.Apttus_Billing__SLASerialNumber__c + "\",\r\n    \"BillingCity\":\"" + acc.BillingCity + "\",\r\n    " +
-                "\"BillingState\": \"" + acc.BillingState + "\",\r\n    \"BillingCountry\": \"" + acc.BillingCountry + "\"\r\n}";
+                "\"BillingState\": \"" + acc.BillingState + "\",\r\n    \"BillingCountry\": \"" + acc.BillingCountry + "\"\r\n}";////////////////
 
             /*var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(accountData.ToString());
             Console.WriteLine($"\n\nTake query: {data}");
