@@ -45,8 +45,9 @@ namespace Account_CRUD_App.Controllers
         {
             SFLogin log = new SFLogin();
             Dictionary<string, string> response = log.authLogin(username, password);
-            Console.WriteLine("\n\n\nNEWW:: "+response);
-            if (response.ContainsKey("error")) //////////////////////
+            Console.WriteLine("\n\n\nNEWW:: " + response + "::" + response["statusCode"]);
+            //if (response.ContainsKey("error")) //////////////////////
+            if (response["statusCode"] != "OK")
             {
                 String loginError = "Please provide valid Username or Password";
                 return BadRequest(new { Message = loginError });

@@ -27,18 +27,31 @@ namespace Account_CRUP_App.Controllers
         {
             if (access_token != "") {
                 Console.WriteLine("\nIN HOME Controller:: ");
-                List<Account> response = new List<Account>();
+                /*List<Account> response = new List<Account>();
                 response = accCRUD.Read(1, 10000, fields);
                 Console.WriteLine("\nress::" + response.ToString() + "--" + response.Count());
                 ViewBag.accData = response;
                 //TempData["totalAcc"] = response.Count();
-                ViewBag.totalAcc = response.Count();
+                ViewBag.totalAcc = response.Count();*/
+                SFLogin log = new SFLogin();
+                string getData = log.getData("select COUNT(ID) from Account");
+                Console.WriteLine("\nHomeGETData::" + getData);
+                if (!String.IsNullOrEmpty(getData))
+                {
+                    var accRecords = JsonConvert.DeserializeObject<AccountModel>(getData.ToString());
+
+                    Console.WriteLine("\nMODEL:: " + accRecords.records[0].expr0);
+                    if (accRecords.records[0].expr0 > 0)
+                    {
+                        ViewBag.totalAcc = accRecords.records[0].expr0;
+                    }
+                }
+                return View("Accounts");
             } else
             {
                 //TempData["errMsg"] = "Access Token is missing...";
                 return View("Login");
             }
-            
             return View("Accounts");
         }
 
@@ -205,18 +218,18 @@ namespace Account_CRUP_App.Controllers
                 Console.WriteLine("\nIN HOME Controller\n" + Instance_url + ":::" + access_token);
 
                 SFLogin log = new SFLogin();
-                string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC ");
+                string getData = log.getData("select COUNT(ID) from Apttus_Proposal__Proposal__c");
                 Console.WriteLine("\nHomeGETData::" + getData);
                 if (!String.IsNullOrEmpty(getData))
                 {
                     var quoteRecords = JsonConvert.DeserializeObject<QuoteModel>(getData.ToString());
 
-                    Console.WriteLine("\nMODEL:: " + quoteRecords);
-                    if (quoteRecords.records.Count > 0)
+                    Console.WriteLine("\nMODEL:: " + quoteRecords.records[0].expr0);
+                    if (quoteRecords.records[0].expr0 > 0)
                     {
                         //ViewBag.aceess_token = access_token;
-                        ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
-                        ViewBag.TotalQuotes = quoteRecords.records.Count;
+                        //ViewBag.quotes1 = quoteRecords.records;//.Take(numOfRecords).ToList();
+                        ViewBag.TotalQuotes = quoteRecords.records[0].expr0;
                     }
                 }
                 return View("Quotes");

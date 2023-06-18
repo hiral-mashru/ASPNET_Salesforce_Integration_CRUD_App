@@ -10,6 +10,7 @@
     {
         public Dictionary<string, string>? attributes { get; set; }
         public string? Id { get; set; }
+        public int? expr0 { get; set; }
         public string? Name { get; set; }
         public string? Apttus_Proposal__Approval_Stage__c { get; set; }
         public double? Apttus_Proposal__Net_Amount__c { get; set; }

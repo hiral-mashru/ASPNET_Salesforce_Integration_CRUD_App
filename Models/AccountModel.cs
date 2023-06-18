@@ -15,6 +15,7 @@ namespace Account_CRUP_App.Models
     {
         public Dictionary<string,string>? attributes { get; set; }
         public string? Id { get; set; }
+        public int? expr0 { get; set; }
         public string? Name { get; set; }
       //public string? Region__c { get; set; }
         public int ? NumberOfEmployees { get; set; }

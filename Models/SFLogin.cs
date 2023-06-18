@@ -30,8 +30,8 @@ namespace Account_CRUD_App.Models
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "https://login.salesforce.com/services/oauth2/token");
-            request.Headers.Add("Authorization", "Bearer iFGgGoyfqUlXW14GgdX72Qu9");///////////////////////
-            request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:0; LSKey-c$CookieConsentPolicy=0:0");///////////
+            //request.Headers.Add("Authorization", "Bearer iFGgGoyfqUlXW14GgdX72Qu9");///////////////////////
+            //request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:0; LSKey-c$CookieConsentPolicy=0:0");///////////
             var collection = new List<KeyValuePair<string, string>>();
             collection.Add(new("grant_type", "password"));
             collection.Add(new("client_id", "3MVG9ux34Ig8G5epc55ASCGyqz3.bcCMC.kRhrV48sZQgo5KoAB43ntMPss2JBccc9l0aFczH9_pBg2AZudTn"));
@@ -42,9 +42,10 @@ namespace Account_CRUD_App.Models
             request.Content = content;
             var response = client.SendAsync(request).Result;
             //response.EnsureSuccessStatusCode();
-            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            Console.WriteLine("ANSresponse:: "+ response.StatusCode + "::"+response+":::"+response.Content.ReadAsStringAsync().Result);
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
+            values["statusCode"] = response.StatusCode.ToString();
             if (values.ContainsKey("access_token"))
             {
                 AuthToken = values["access_token"];
@@ -102,7 +103,7 @@ namespace Account_CRUD_App.Models
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 request.Headers.Add("X-PreetyPrint", "1");
                 var response = client.SendAsync(request).Result;
-                Console.WriteLine("RESPONSE::"+response);
+                Console.WriteLine("ANSRESPONSE::"+response);
                 
                 return response.Content.ReadAsStringAsync().Result;
             }
