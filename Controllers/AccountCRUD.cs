@@ -10,12 +10,12 @@ namespace Account_CRUP_App.Controllers
         public string Create(Account acc)
         {
             Console.WriteLine("\nCreateMethod::" + acc );
-            string reqBody2 = "{\r\n    \"Name\": \"" + acc.Name + "\",\r\n    \"NumberOfEmployees\":\"" + acc.NumberOfEmployees + "\",\r\n    " +
+            /*string reqBody2 = "{\r\n    \"Name\": \"" + acc.Name + "\",\r\n    \"NumberOfEmployees\":\"" + acc.NumberOfEmployees + "\",\r\n    " +
                 "\"ShippingState\":\"" + acc.ShippingState + "\",\r\n    \"ShippingCountry\":\"" + acc.ShippingCountry + "\",\r\n    " +
                 "\"Phone\":\"" + acc.Phone + "\",\r\n    \"Fax\":\"" + acc.Fax + "\",\r\n    \"Apttus_Billing__SLASerialNumber__c\":" +
                 "\"" + acc.Apttus_Billing__SLASerialNumber__c + "\",\r\n    \"BillingCity\":\"" + acc.BillingCity + "\",\r\n    " +
                 "\"BillingState\": \"" + acc.BillingState + "\",\r\n    \"BillingCountry\": \"" + acc.BillingCountry + "\"\r\n}";////////////////
-
+            */
             //List<KeyValuePair<string, string>> s = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(reqBody2);
             //Console.WriteLine("\n\n\n SSSS::: " + s[0].ToString);
             string reqBody0 = JsonConvert.SerializeObject(acc);
@@ -153,12 +153,12 @@ namespace Account_CRUP_App.Controllers
         {
             Console.WriteLine("\nUpdateMethod::" + acc.ToString());
             
-            string reqBody2 = "{\r\n    \"Name\": \""+acc.Name + "\",\r\n    \"NumberOfEmployees\":\"" + acc.NumberOfEmployees + "\",\r\n    " +
+            /*string reqBody2 = "{\r\n    \"Name\": \""+acc.Name + "\",\r\n    \"NumberOfEmployees\":\"" + acc.NumberOfEmployees + "\",\r\n    " +
                 "\"ShippingState\":\"" + acc.ShippingState + "\",\r\n    \"ShippingCountry\":\"" + acc.ShippingCountry + "\",\r\n    " +
                 "\"Phone\":\""+acc.Phone+ "\",\r\n    \"Fax\":\""+acc.Fax+ "\",\r\n    \"Apttus_Billing__SLASerialNumber__c\":" +
                 "\""+acc.Apttus_Billing__SLASerialNumber__c+ "\",\r\n    \"BillingCity\":\""+acc.BillingCity+ "\",\r\n    " +
                 "\"BillingState\": \""+acc.BillingState+ "\",\r\n    \"BillingCountry\": \""+acc.BillingCountry+ "\"\r\n}";
-
+            */
             /*string idStr = "";
             var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(acc.ToString());
             Console.WriteLine($"\n\nTake query: {data}");
@@ -182,7 +182,8 @@ namespace Account_CRUP_App.Controllers
             }
             reqBody = reqBody + "\r\n}";*/
             string reqBody0 = JsonConvert.SerializeObject(acc);
-            string reqBody = "{" + reqBody0.Substring(42);
+            Console.WriteLine(reqBody0 + "::" + reqBody0.Length);
+            string reqBody = "{" + reqBody0.Substring(58);
             Console.WriteLine("\nSTRING::" + reqBody);
             
             string response = log.postData(reqBody, HttpMethod.Patch, "/"+id);

@@ -113,16 +113,17 @@ namespace Account_CRUD_App.Models
             using (var client = new HttpClient())
             {
                 var request = new HttpRequestMessage(method, InstanceUrl + "/services/data/v57.0/sobjects/Account"+urlId);
-                //request.Headers.Add("Authorization", "Bearer " + AuthToken);
+                request.Headers.Add("Authorization", "Bearer " + AuthToken);
                 //request.Headers.Add("Content-Type", "application/json");
-                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //request.Headers.Add("Cookie", "BrowserId=DbVwxcNeEe2U8j0TtFIreA; CookieConsentPolicy=0:1; LSKey-c$CookieConsentPolicy=0:1");
 
                 var content = new StringContent(soqlQuery, null, "application/json");
-                request.Content = (HttpContent?)content;
+                Console.WriteLine($"Post data: {content}");
+                request.Content = content;
 
                 var response = client.SendAsync(request).Result;
-                Console.WriteLine("\n\nRESPONSE::" + urlId +"::" + response.Content.ReadAsStringAsync().Result +"::"+response.IsSuccessStatusCode+"::"+response.StatusCode);
+                Console.WriteLine("\n\nRESPONSE::" + InstanceUrl +urlId +"::" + response.Content.ReadAsStringAsync().Result +"::"+response.IsSuccessStatusCode+"::"+response.StatusCode);
                 response.EnsureSuccessStatusCode();
                 
                 string s = response.Content.ReadAsStringAsync().Result;
