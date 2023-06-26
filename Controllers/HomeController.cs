@@ -243,7 +243,7 @@ namespace Account_CRUP_App.Controllers
         {
             Console.WriteLine("\n\nPageNum::" + pageNum + "::" + pageSize);
             SFLogin log = new SFLogin();
-            string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC limit " + pageSize + " offset " + ((pageNum - 1) * pageSize));
+            string getData = log.getData("select id, name, Apttus_Proposal__Approval_Stage__c, Apttus_Proposal__Net_Amount__c from Apttus_Proposal__Proposal__c ORDER BY LastModifiedDate DESC limit " + (pageSize) + " offset " + ((pageNum - 1) * pageSize));
             Console.WriteLine("\nHomeGETData::" + getData);
             List<QuoteRecords> response = new List<QuoteRecords>();
             if (!String.IsNullOrEmpty(getData))

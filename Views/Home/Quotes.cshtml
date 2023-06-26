@@ -80,9 +80,10 @@
             $.get("/Home/quoteList", { pageNum: pageNum, pageSize: pageSize }, function (response) {
                 console.log("DATA::" + JSON.stringify(response));
                 if (response != null) {
+                    
                     $("#tBody").empty();
                     var datacontent = "";
-                    for (var i = 0; i < response.length; i++) {
+                    for (var i = 0; i < response.length-1; i++) {
                         console.log("ID::" + response[i].id);
                         datacontent +=
                             "<tr><td width='270px'>" +
@@ -92,6 +93,14 @@
                             "</tr>";
                     }
                     $("#tBody").append(datacontent);
+
+
+                    /*conole.log("Size::::" + response.length);
+                    if (response.length >= 11) {
+                        document.getElementById("Next").disabled = true;
+                    } else {
+                        document.getElementById("Next").disabled = false;
+                    }*/
                 }
             });
         }
