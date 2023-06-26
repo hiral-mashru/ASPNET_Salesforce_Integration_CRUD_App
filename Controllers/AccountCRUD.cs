@@ -183,7 +183,7 @@ namespace Account_CRUP_App.Controllers
             reqBody = reqBody + "\r\n}";*/
             string reqBody0 = JsonConvert.SerializeObject(acc);
             Console.WriteLine(reqBody0 + "::" + reqBody0.Length);
-            string reqBody = "{" + reqBody0.Substring(58);
+            string reqBody = "{" + reqBody0.Substring(27);
             Console.WriteLine("\nSTRING::" + reqBody);
             
             string response = log.postData(reqBody, HttpMethod.Patch, "/"+id);
