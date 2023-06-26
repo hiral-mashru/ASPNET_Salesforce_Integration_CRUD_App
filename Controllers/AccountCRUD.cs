@@ -18,9 +18,9 @@ namespace Account_CRUP_App.Controllers
             */
             //List<KeyValuePair<string, string>> s = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(reqBody2);
             //Console.WriteLine("\n\n\n SSSS::: " + s[0].ToString);
-            string reqBody0 = JsonConvert.SerializeObject(acc);
-            Console.WriteLine(reqBody0 + "::" + reqBody0.Length);
-            string reqBody = "{" + reqBody0.Substring(42);
+            string reqBody = JsonConvert.SerializeObject(acc);
+            Console.WriteLine(reqBody + "::" + reqBody.Length);
+            //string reqBody = "{" + reqBody0.Substring(42);
             
             /*var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(accountData.ToString());
             Console.WriteLine($"\n\nTake query: {data}");

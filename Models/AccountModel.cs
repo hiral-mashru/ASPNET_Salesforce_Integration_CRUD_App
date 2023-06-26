@@ -2,6 +2,8 @@
 using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;*/
 
+using Newtonsoft.Json;
+
 namespace Account_CRUP_App.Models
 {
     public class AccountModel
@@ -13,7 +15,9 @@ namespace Account_CRUP_App.Models
 
     public class Account
     {
+        [JsonIgnore]
         public Dictionary<string,string>? attributes { get; set; }
+        [JsonIgnore]
         public int? expr0 { get; set; }
         public string? Id { get; set; }
         public string? Name { get; set; }
